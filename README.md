@@ -1,2 +1,2 @@
 # my-Psychological-Tests-Manage
-mymy-Psychological-Tests web management
+my-Psychological-Tests web management
