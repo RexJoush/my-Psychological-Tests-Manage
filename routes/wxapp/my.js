@@ -1,6 +1,6 @@
 
 /*
-    小程序端发现页的 路由
+    小程序端我的页的 路由
  */
 let express = require("express");
 let router = express.Router();
