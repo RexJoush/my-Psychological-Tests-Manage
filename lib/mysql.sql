@@ -1,8 +1,17 @@
 
+-- 心里测评表
+CREATE TABLE psy_test(
+    test_id INT, -- 测试 id
+    name VARCHAR(255), -- 测试名字
+    brief_introduction VARCHAR(255), -- 测试简介
+    harvest VARCHAR(1024), -- 您的收获
+    applicable_people VARCHAR(255), -- 适用人群
+    detailed_ima_url VARCHAR(255) -- 详情图片
 
+);
 
 -- 咨询师表
-create table counseling(
+CREATE TABLE counseling(
     consultant_id INT, -- 咨询师id
     image_url VARCHAR(255), -- 照片
     evaluate VARCHAR(1024), -- 评价
@@ -16,7 +25,7 @@ create table counseling(
 );
 
 -- 线上课程表
-create table course (
+CREATE TABLE course (
     id INT, -- 课程id
     brief_introduction VARCHAR(255), -- 课程简介
     course_imgurl VARCHAR(255), -- 课程简介的图片
@@ -27,4 +36,14 @@ create table course (
     course_outline VARCHAR(4096), -- 课程大纲
     course_catalogue VARCHAR(4096) -- 课程目录
 
+);
+
+-- eap表
+
+CREATE TABLE eap (
+    intro VARCHAR(255), -- 标题
+    imgurl VARCHAR(255), -- 介绍图片
+    title VARCHAR(255), -- 标题
+    subtitle VARCHAR(255), -- 副标题
+    eap_detail_url VARCHAR(255) --详细介绍图片
 );
