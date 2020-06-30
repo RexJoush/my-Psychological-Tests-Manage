@@ -1,6 +1,6 @@
 let express = require("express");
 let app = express();
-let mysql = require("./util/mysql");
+// let mysql = require("./util/mysql");
 
 
 // 配置路由
