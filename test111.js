@@ -19,12 +19,14 @@ let b = "akdsjfhjksdfhjakshfjkba7816bf8f01cfea414140de5dae2223b00361a396177a9cb4
 // console.log(utility.sha1(a));
 // console.log(utility.sha1(b));
 
-let mysql = require("./util/mysql");
+// let mysql = require("./util/mysql");
 
-// mysql.connection.query("select password from psy_user where username = 'admin'",(err, result)=>{
-//
-//     // console.log(result[0].password === utility.sha1(a));
-//     console.log(result);
-// });
+mysql.connection.query("select password from psy_user where username = 'admin'",(err, result)=>{
 
-console.log((!(~+[])+{})[--[~+""][+[]]*[~+[]]+~~!+[]]+({}+[])[[~!+[]]*~+[]])
+    // console.log(result[0].password === utility.sha1(a));
+    console.log(result[0].password);
+});
+
+
+
+// console.log((!(~+[])+{})[--[~+""][+[]]*[~+[]]+~~!+[]]+({}+[])[[~!+[]]*~+[]]);

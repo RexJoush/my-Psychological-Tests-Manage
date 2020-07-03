@@ -82,7 +82,7 @@ router.post('/getOpenid', (req, res) => {
 });
 
 
-router.get("/get");
+// router.get("/get");
 
 
 module.exports = router;

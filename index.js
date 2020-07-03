@@ -7,11 +7,14 @@ let app = express();
 let wxappHomeRouter = require("./routes/wxapp/home");
 let wxappDiscoverRouter = require("./routes/wxapp/discover");
 let wxappMyRouter = require("./routes/wxapp/my");
+let webappLoginRouter = require("./routes/webapp/login");
+let webappHomeRouter = require("./routes/webapp/home");
 
 app.use("/wxapp/home", wxappHomeRouter);
 app.use("/wxapp/discover", wxappDiscoverRouter);
 app.use("/wxapp/my", wxappMyRouter);
-
+app.use("/webapp/login",webappLoginRouter);
+app.use("/webapp/home",webappHomeRouter);
 
 /*
     上传文件 multer

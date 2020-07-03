@@ -9,8 +9,10 @@
   "author": "joush",
   "license": "ISC",
   "dependencies": {
+    "connect-multiparty": "^2.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "utility": "^1.16.3"
   }
 }

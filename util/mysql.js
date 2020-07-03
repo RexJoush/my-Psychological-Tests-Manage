@@ -1,7 +1,6 @@
 let mysql = require("mysql");
 let fs = require("fs");
 
-
 // 读取 json 数据
 let data = fs.readFileSync(__dirname + "/mysqlProperties.json","utf-8");
 

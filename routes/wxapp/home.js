@@ -171,7 +171,7 @@ router.get("/getCourseData", (req, res) => {
 
 // 获取EAP简介
 router.get("/getEap", (req, res) => {
-
+    let arr = [];
     let sql =   "SELECT" +
                     " img_url," + // 图片
                     " title," +  // 标题
@@ -184,7 +184,8 @@ router.get("/getEap", (req, res) => {
             obj.img_url = result[0].img_url;
             obj.title = result[0].title;
             obj.subtitle = result[0].subtitle;
-            res.send(obj);
+            arr.push(obj);
+            res.send(JSON.stringify(arr));
         }
     });
 

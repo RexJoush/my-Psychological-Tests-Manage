@@ -22,8 +22,8 @@ CREATE TABLE consultant(
     img_url VARCHAR(255), -- 照片
     introduction VARCHAR(1024), -- 咨询师简介
     expertise VARCHAR(255), -- 擅长领域
-    price INT, -- 每小时咨询费用
-    form VARCHAR(1024), -- 咨询形式
+    price VARCHAR(20), -- 每小时咨询费用
+    form VARCHAR(255), -- 咨询形式
     -- personal_introduction VARCHAR(2048), -- 个人介绍
     -- educational_experience VARCHAR(4096), -- 教育培训经历
     -- qualification VARCHAR(1024), -- 资格证书
@@ -34,8 +34,7 @@ CREATE TABLE consultant(
 -- 线上课程表
 CREATE TABLE course (
     course_id INT, -- 课程id
-    introduction VARCHAR(255), -- 课程简介
-    img_url VARCHAR(255), -- 课程简介的图片
+    img_url VARCHAR(255), -- 课程的图片
     title VARCHAR(255), -- 课程标题
     subtitle VARCHAR(255), -- 课程副标题
     details_introduction VARCHAR(2048), -- 课程详细简介
@@ -49,8 +48,8 @@ CREATE TABLE course (
 
 CREATE TABLE eap (
     eap_id INT, -- eap id
-    title VARCHAR(255), -- 标题
     img_url VARCHAR(255), -- 介绍图片
+    title VARCHAR(255), -- 标题
     subtitle VARCHAR(255), -- 副标题
     details_img_url VARCHAR(255) --详细介绍图片
 );
