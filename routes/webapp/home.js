@@ -22,7 +22,7 @@ router.post("/changeBanner", multipartMiddleware, (req, res) => {
 
     // let buffer = fs.readFileSync("./public/wxapp/image/banner/1.jpg");
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 6; i++) {
         let name = (i + 1) + ".jpg";
         let path = arr[i].path;
         try {
@@ -220,8 +220,8 @@ router.post("/changeEap", multipartMiddleware, (req, res) => {
     let path2 = details_img_url.path;
     try {
         // 获取上传的临时图片对象
-        let fd1 = fs.readFileSync(path1); // 咨询师照片
-        let fd2 = fs.readFileSync(path2); // 咨询师详情图片
+        let fd1 = fs.readFileSync(path1); // eap简介
+        let fd2 = fs.readFileSync(path2); // eap详细介绍图片
 
         // 将图片写入咨询师的位置
         fs.writeFileSync("./public/wxapp/image/eap/" + img_urlName, fd1);
