@@ -54,21 +54,23 @@ router.post("/changePsyTest", multipartMiddleware, (req, res) => {
     // 获取文件对象
     let img = req.files.details_img_url; // 测试详情图片
 
+    // 上传图片修改
+    if(img.size > 0){
+        // 拼接文件名
+        let fileName = test_id + ".jpg";
+        let path = img.path;
+        try {
+            // 获取上传的临时图片对象
+            let fd = fs.readFileSync(path);
 
-    // 拼接文件名
-    let fileName = test_id + ".jpg";
-    let path = img.path;
-    try {
-        // 获取上传的临时图片对象
-        let fd = fs.readFileSync(path);
-
-        // 将图片写入心理测试的位置
-        fs.writeFileSync("./public/wxapp/image/test_details/" + fileName, fd);
-        // 将临时图片删除
-        fs.unlinkSync(path);
-    } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
-        throw e;
+            // 将图片写入心理测试的位置
+            fs.writeFileSync("./public/wxapp/image/test_details/" + fileName, fd);
+            // 将临时图片删除
+            fs.unlinkSync(path);
+        } catch (e) {
+            res.send({result: 0, err: "图片上传失败"});
+            throw e;
+        }
     }
 
     let sql =   "UPDATE" +
@@ -103,28 +105,31 @@ router.post("/changeConsultant", multipartMiddleware, (req, res) => {
     let img_url = req.files.img_url; // 咨询师照片图片
     let details_img_url = req.files.details_img_url; // 咨询师详情页照片
 
-    // 拼接文件名
-    let img_urlName = consultant_id + ".jpg";
-    let details_img_urlName = consultant_id + ".jpg";
+    // 上传图片再进行更改
+    if (img_url.size > 0 && details_img_url.size > 0) {
+        // 拼接文件名
+        let img_urlName = consultant_id + ".jpg";
+        let details_img_urlName = consultant_id + ".jpg";
 
-    // 获取文件临时路径
-    let path1 = img_url.path;
-    let path2 = details_img_url.path;
-    try {
-        // 获取上传的临时图片对象
-        let fd1 = fs.readFileSync(path1); // 咨询师照片
-        let fd2 = fs.readFileSync(path2); // 咨询师详情图片
+        // 获取文件临时路径
+        let path1 = img_url.path;
+        let path2 = details_img_url.path;
+        try {
+            // 获取上传的临时图片对象
+            let fd1 = fs.readFileSync(path1); // 咨询师照片
+            let fd2 = fs.readFileSync(path2); // 咨询师详情图片
 
-        // 将图片写入咨询师的位置
-        fs.writeFileSync("./public/wxapp/image/consultant/" + img_urlName, fd1);
-        fs.writeFileSync("./public/wxapp/image/consultant_details/" + details_img_urlName, fd2);
+            // 将图片写入咨询师的位置
+            fs.writeFileSync("./public/wxapp/image/consultant/" + img_urlName, fd1);
+            fs.writeFileSync("./public/wxapp/image/consultant_details/" + details_img_urlName, fd2);
 
-        // 将临时图片删除
-        fs.unlinkSync(path1);
-        fs.unlinkSync(path2);
-    } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
-        throw e;
+            // 将临时图片删除
+            fs.unlinkSync(path1);
+            fs.unlinkSync(path2);
+        } catch (e) {
+            res.send({result: 0, err: "图片上传失败"});
+            throw e;
+        }
     }
 
     let sql =   "UPDATE" +
@@ -160,23 +165,24 @@ router.post("/changeCourse", multipartMiddleware, (req, res) => {
     // 获取文件对象
     let img = req.files.img_url; // 课程图片
 
-    // 拼接文件名
-    let name = course_id + ".jpg";
+    if (img.size > 0) { // 拼接文件名
+        let name = course_id + ".jpg";
 
-    // 获取文件临时路径
-    let path = img.path;
-    try {
-        // 获取上传的临时图片对象
-        let fd = fs.readFileSync(path); // 课程照片
+        // 获取文件临时路径
+        let path = img.path;
+        try {
+            // 获取上传的临时图片对象
+            let fd = fs.readFileSync(path); // 课程照片
 
-        // 将图片写入课程位置
-        fs.writeFileSync("./public/wxapp/image/course/" + name, fd);
+            // 将图片写入课程位置
+            fs.writeFileSync("./public/wxapp/image/course/" + name, fd);
 
-        // 将临时图片删除
-        fs.unlinkSync(path);
-    } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
-        throw e;
+            // 将临时图片删除
+            fs.unlinkSync(path);
+        } catch (e) {
+            res.send({result: 0, err: "图片上传失败"});
+            throw e;
+        }
     }
 
     let sql =   "UPDATE" +
@@ -211,28 +217,29 @@ router.post("/changeEap", multipartMiddleware, (req, res) => {
     let img_url = req.files.img_url; // 咨询师照片图片
     let details_img_url = req.files.details_img_url; // 咨询师详情页照片
 
-    // 拼接文件名
-    let img_urlName = eap_id + ".jpg";
-    let details_img_urlName = eap_id + ".jpg";
+    if (img_url.size > 0 && details_img_url.size > 0) { // 拼接文件名
+        let img_urlName = eap_id + ".jpg";
+        let details_img_urlName = eap_id + ".jpg";
 
-    // 获取文件临时路径
-    let path1 = img_url.path;
-    let path2 = details_img_url.path;
-    try {
-        // 获取上传的临时图片对象
-        let fd1 = fs.readFileSync(path1); // eap简介
-        let fd2 = fs.readFileSync(path2); // eap详细介绍图片
+        // 获取文件临时路径
+        let path1 = img_url.path;
+        let path2 = details_img_url.path;
+        try {
+            // 获取上传的临时图片对象
+            let fd1 = fs.readFileSync(path1); // eap简介
+            let fd2 = fs.readFileSync(path2); // eap详细介绍图片
 
-        // 将图片写入咨询师的位置
-        fs.writeFileSync("./public/wxapp/image/eap/" + img_urlName, fd1);
-        fs.writeFileSync("./public/wxapp/image/eap_details/" + details_img_urlName, fd2);
+            // 将图片写入咨询师的位置
+            fs.writeFileSync("./public/wxapp/image/eap/" + img_urlName, fd1);
+            fs.writeFileSync("./public/wxapp/image/eap_details/" + details_img_urlName, fd2);
 
-        // 将临时图片删除
-        fs.unlinkSync(path1);
-        fs.unlinkSync(path2);
-    } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
-        throw e;
+            // 将临时图片删除
+            fs.unlinkSync(path1);
+            fs.unlinkSync(path2);
+        } catch (e) {
+            res.send({result: 0, err: "图片上传失败"});
+            throw e;
+        }
     }
 
     let sql =   "UPDATE" +
