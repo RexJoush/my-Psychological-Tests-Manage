@@ -6,7 +6,7 @@ let fs = require("fs");
 
 let mysql = require("../../util/mysql");
 
-
+let uuid = require("uuid");
 
 // 获取轮播图
 router.get("/getSwiper", (req, res) => {
@@ -26,6 +26,8 @@ router.get("/getSwiper", (req, res) => {
                 obj.fileid = result[i].banner_id;
                 obj.banner_url = result[i].img_url;
                 response.data.push(obj);
+		// 置空
+		obj = {};
             }
 
             res.status(200)
@@ -37,28 +39,31 @@ router.get("/getSwiper", (req, res) => {
 // 删除轮播图
 router.get("/delSwiper", (req, res) => {
     let banner_id = req.query.fileid;
+    try {
+        fs.unlinkSync("./public/wxapp/image/banner/" + banner_id + ".jpg");
+    } catch (e){
+        res.status(200)
+            .send({result: 0, err: "删除失败"});
+	throw e;
+    }
 
-    fs.unlinkSync("./public/wxapp/image/banner/ " + banner_id + ".jpg");
-
-
-    let sql = "DELETE FROM banner WHERE banner = ?";
+    let sql = "DELETE FROM banner WHERE banner_id = ?";
 
     mysql.connection.query(sql, [banner_id], (err, result) => {
         if (err) throw err;
         else {
             res.status(200)
-                .send({tips: "删除成功"});
+                .send({result: 1});
         }
     });
 });
 
 // 修改轮播图
 router.post("/changeSwiper", multipartMiddleware, (req, res) => {
-    // console.log(req.files.imgs);
-    // let arr = req.files.imgs;
+
     // 获取文件对象
     let img = req.files.img_url; // 轮播图
-
+    let banner_id = uuid.v4();
     /*{
         fieldName: 'img',
         originalFilename: '11.jpg',
@@ -69,23 +74,35 @@ router.post("/changeSwiper", multipartMiddleware, (req, res) => {
         type: 'image/jpeg'
     }*/
 
-    for (let i = 0; i < 6; i++) {
-        let name = (i + 1) + ".jpg";
-        let path = arr[i].path;
-        try {
-            // 获取上传的临时图片对象
-            let fd = fs.readFileSync(path);
+    let name = banner_id + ".jpg";
+    let path = img.path;
+    try {
+        // 获取上传的临时图片对象
+        let fd = fs.readFileSync(path);
 
-            // 将图片写入轮播图的位置
-            fs.writeFileSync("./public/wxapp/image/banner/" + name, fd);
-            // 将临时图片删除
-            fs.unlinkSync(path);
-        } catch (e) {
-            res.status(200)
-                .send({result: 0, err: "上传失败"});
-            throw e;
-        }
+        // 将图片写入轮播图的位置
+        fs.writeFileSync("./public/wxapp/image/banner/" + name, fd);
+        // 将临时图片删除
+        fs.unlinkSync(path);
+    } catch (e) {
+        res.status(200)
+            .send({result: 0, err: "修改失败"});
+        throw e;
     }
+
+    // 更新数据库
+    let sql =   "INSERT INTO banner (banner_id,img_url) values(?,?)";
+    // 拼接图片地址
+    let img_url = "http://www.rexjoush.com:3000/wxapp/image/banner/" + name;
+    mysql.connection.query(sql,[banner_id,img_url],(err,result)=>{
+        if (err) {
+            res.send({result: 0, err: "修改失败"});
+            throw err;
+        } else {
+            res.status(200)
+                .send({result: 1});
+        }
+    });
 
     // 返回登录成功
     res.status(200)

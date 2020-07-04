@@ -25,6 +25,7 @@ router.get("/getBannerData", (req, res) => {
                 obj.value = result[i].banner_id;
                 obj.label = result[i].img_url;
                 response.data.push(obj);
+                obj = {};
             }
 
             res.status(200)
