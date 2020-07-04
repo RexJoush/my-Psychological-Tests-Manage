@@ -104,6 +104,9 @@ router.get("/getPsyCounseling", (req, res) => {
 
 // 获取心理咨询师详情信息
 router.get("/getConsultantDetails", (req, res) => {
+    let response = {
+        data: [],
+    }
     let consultant_id = req.query.consultant_id;
     let sql =   "SELECT" +
                     " consultant_id," +  // 咨询师 id
@@ -128,8 +131,8 @@ router.get("/getConsultantDetails", (req, res) => {
             obj.price = result[0].price;
             obj.form = result[0].form;
             obj.details_img_url = result[0].details_img_url;
-
-            res.send(JSON.stringify(obj));
+            response.data.push(obj)
+            res.send(JSON.stringify(response));
         }
     });
 
@@ -150,7 +153,6 @@ router.get("/getCourseData", (req, res) => {
         if (err) throw err;
         else {
             for (let i = 0; i < result.length; i++) {
-
                 obj.course_id = result[i].course_id;
                 obj.img_url = result[i].img_url;
                 obj.title = result[i].title;
