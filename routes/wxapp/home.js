@@ -9,15 +9,29 @@ let mysql = require("../../util/mysql");
 
 // 获取轮播图
 router.get("/getBannerData", (req, res) => {
-    let arr = [];
-    for (let i = 1; i < 7; i++) {
-        let obj = {};
-        let imgUrl = "http://www.rexjoush.com:3000/wxapp/image/banner/" + i + ".jpg";
-        obj.value = i;
-        obj.label = imgUrl;
-        arr.push(obj);
+    let response = {
+        data: []
     }
-    res.send(arr);
+
+    let sql =   "SELECT" +
+                    " banner_id," + // 图片id
+                    " img_url " +  // 图片地址
+                " FROM" +          // 修改测试名称
+                    " banner"; +   // 修改测试简介
+
+        mysql.connection.query(sql, [], (err, result) => {
+            let obj = {};
+            for (let i = 0; i< result.length; i++){
+                obj.value = result[i].banner_id;
+                obj.label = result[i].img_url;
+                response.data.push(obj);
+            }
+
+            res.status(200)
+                .send(JSON.stringify(response));
+        })
+
+        // obj.value = i;
 });
 
 // 获取心理测评

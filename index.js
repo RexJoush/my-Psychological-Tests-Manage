@@ -9,12 +9,14 @@ let wxappDiscoverRouter = require("./routes/wxapp/discover");
 let wxappMyRouter = require("./routes/wxapp/my");
 let webappLoginRouter = require("./routes/webapp/login");
 let webappHomeRouter = require("./routes/webapp/home");
+let webappDiscoverRouter = require("./routes/webapp/discover");
 
 app.use("/wxapp/home", wxappHomeRouter);
 app.use("/wxapp/discover", wxappDiscoverRouter);
 app.use("/wxapp/my", wxappMyRouter);
 app.use("/webapp/login",webappLoginRouter);
 app.use("/webapp/home",webappHomeRouter);
+app.use("/webapp/discover",webappDiscoverRouter);
 
 /*
     上传文件 multer
@@ -22,6 +24,13 @@ app.use("/webapp/home",webappHomeRouter);
 
 
 app.use(express.static("./public"));
+
+app.all('*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+    next();
+});
+
 
 app.get("/", (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");

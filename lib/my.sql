@@ -20,27 +20,27 @@ CREATE TABLE psy_user (
 -- 用户心理测试表
 CREATE TABLE user_pst (
     openid VARCHAR(255), -- 用户 openid
-    test_id INT, -- 用户所做测试的id
+    test_id VARCHAR(255), -- 用户所做测试的id
     test_time VARCHAR(30) -- 所做测试的时间
 );
 
 -- 用户心理咨询表
 CREATE TABLE user_counseling (
     openid VARCHAR(255), -- 用户 openid
-    test_id INT, -- 用户所做咨询师的id
+    test_id VARCHAR(255), -- 用户所做咨询师的id
     counseling_time VARCHAR(30) -- 所做咨询的时间
 );
 
 -- 用户心理课程表
 CREATE TABLE user_course (
     openid VARCHAR(255), -- 用户 openid
-    test_id INT, -- 用户所上课程的id
+    test_id VARCHAR(255), -- 用户所上课程的id
     course_time VARCHAR(30) -- 所上课的时间
 );
 
 -- 用户心理成长表
 CREATE TABLE user_grow (
     openid VARCHAR(255), -- 用户 openid
-    test_id INT, -- 用户所做心理成长的id
+    test_id VARCHAR(255), -- 用户所做心理成长的id
     grow_time VARCHAR(30) -- 所做心理成长的时间
 );

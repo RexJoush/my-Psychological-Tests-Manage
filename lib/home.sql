@@ -5,20 +5,33 @@
 
 */
 
+-- 轮播图表
+CREATE TABLE banner(
+    banner_id VARCHAR(255), -- 轮播图片id
+    img_url VARCHAR(255) -- 轮播图地址
+);
 
 -- 心里测评表
 CREATE TABLE psy_test(
-    test_id INT, -- 测试 id
+    test_id VARCHAR(255), -- 测试 id
     name VARCHAR(255), -- 测试名字
     introduction VARCHAR(255), -- 测试简介
     -- harvest VARCHAR(1024), -- 您的收获
     -- applicable_people VARCHAR(255), -- 适用人群
+    category_id VARCHAR(255), -- 测试类别
     details_img_url VARCHAR(255) -- 详情图片
 );
 
+-- 测试类别
+CREATE TABLE test_category(
+    category_id VARCHAR(255), -- 分类id
+    category_name VARCHAR(20) -- 分类名字
+);
+
+
 -- 咨询师表
 CREATE TABLE consultant(
-    consultant_id INT, -- 咨询师id
+    consultant_id VARCHAR(255), -- 咨询师id
     img_url VARCHAR(255), -- 照片
     introduction VARCHAR(1024), -- 咨询师简介
     expertise VARCHAR(255), -- 擅长领域
@@ -33,12 +46,12 @@ CREATE TABLE consultant(
 
 -- 线上课程表
 CREATE TABLE course (
-    course_id INT, -- 课程id
+    course_id VARCHAR(255), -- 课程id
     img_url VARCHAR(255), -- 课程的图片
     title VARCHAR(255), -- 课程标题
     subtitle VARCHAR(255), -- 课程副标题
     details_introduction VARCHAR(2048), -- 课程详细简介
-    consultant_id INT, -- 对应咨询师的id
+    consultant_id VARCHAR(255), -- 对应咨询师的id
     course_outline VARCHAR(4096), -- 课程大纲
     course_catalogue VARCHAR(4096) -- 课程目录
 
@@ -47,7 +60,7 @@ CREATE TABLE course (
 -- eap表
 
 CREATE TABLE eap (
-    eap_id INT, -- eap id
+    eap_id VARCHAR(255), -- eap id
     img_url VARCHAR(255), -- 介绍图片
     title VARCHAR(255), -- 标题
     subtitle VARCHAR(255), -- 副标题

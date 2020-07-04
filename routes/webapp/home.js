@@ -6,10 +6,59 @@ let fs = require("fs");
 
 let mysql = require("../../util/mysql");
 
+
+
+// 获取轮播图
+router.get("/getSwiper", (req, res) => {
+    let response = {
+        data: []
+    }
+
+    let sql =   "SELECT" +
+                    " banner_id," + // 图片id
+                    " img_url " +  // 图片地址
+                " FROM" +          // 修改测试名称
+                    " banner"; +   // 修改测试简介
+
+        mysql.connection.query(sql, [], (err, result) => {
+            let obj = {};
+            for (let i = 0; i< result.length; i++){
+                obj.fileid = result[i].banner_id;
+                obj.banner_url = result[i].img_url;
+                response.data.push(obj);
+            }
+
+            res.status(200)
+                .send(JSON.stringify(response));
+        })
+});
+
+
+// 删除轮播图
+router.get("/delSwiper", (req, res) => {
+    let banner_id = req.query.fileid;
+
+    fs.unlinkSync("./public/wxapp/image/banner/ " + banner_id + ".jpg");
+
+
+    let sql = "DELETE FROM banner WHERE banner = ?";
+
+    mysql.connection.query(sql, [banner_id], (err, result) => {
+        if (err) throw err;
+        else {
+            res.status(200)
+                .send({tips: "删除成功"});
+        }
+    });
+});
+
 // 修改轮播图
-router.post("/changeBanner", multipartMiddleware, (req, res) => {
+router.post("/changeSwiper", multipartMiddleware, (req, res) => {
     // console.log(req.files.imgs);
-    let arr = req.files.imgs;
+    // let arr = req.files.imgs;
+    // 获取文件对象
+    let img = req.files.img_url; // 轮播图
+
     /*{
         fieldName: 'img',
         originalFilename: '11.jpg',
@@ -19,8 +68,6 @@ router.post("/changeBanner", multipartMiddleware, (req, res) => {
         name: '11.jpg',
         type: 'image/jpeg'
     }*/
-
-    // let buffer = fs.readFileSync("./public/wxapp/image/banner/1.jpg");
 
     for (let i = 0; i < 6; i++) {
         let name = (i + 1) + ".jpg";
@@ -34,15 +81,19 @@ router.post("/changeBanner", multipartMiddleware, (req, res) => {
             // 将临时图片删除
             fs.unlinkSync(path);
         } catch (e) {
-            res.send({result:0,err: "上传失败"});
+            res.status(200)
+                .send({result: 0, err: "上传失败"});
             throw e;
         }
     }
 
     // 返回登录成功
-    res.send({result:1});
+    res.status(200)
+        .send({result: 1});
 
 });
+
+
 
 
 // 修改心理测试
