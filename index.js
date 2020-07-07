@@ -3,6 +3,14 @@ let app = express();
 // let mysql = require("./util/mysql");
 
 
+// 配置跨域
+let allowCrossDomain = (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Method", "*");
+    next();
+}
+app.use(allowCrossDomain);
+
 // 配置路由
 let wxappHomeRouter = require("./routes/wxapp/home");
 let wxappDiscoverRouter = require("./routes/wxapp/discover");
@@ -23,12 +31,7 @@ app.use("/webapp/discover",webappDiscoverRouter);
  */
 
 
-let allowCrossDomain = (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Method", "*");
-    next();
-}
-app.use(allowCrossDomain);
+
 app.use(express.static("./public"));
 
 // app.all('*', function (req, res, next) {
