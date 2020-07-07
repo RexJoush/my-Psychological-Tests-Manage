@@ -23,6 +23,11 @@ app.use("/webapp/discover",webappDiscoverRouter);
  */
 
 
+let allowCrossDomain = (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+}
+app.use(allowCrossDomain());
 app.use(express.static("./public"));
 
 app.all('*', function (req, res, next) {
