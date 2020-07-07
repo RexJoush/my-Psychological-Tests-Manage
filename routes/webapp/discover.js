@@ -81,7 +81,7 @@ router.post("/addConsultant", multipartMiddleware, (req, res) => {
     }
 
     // 更新数据库
-    let sql = "INSERT INTO psy_test (consultant_id, img_url, introduction, expertise, price, form, details_img_url) VALUES (?,?,?,?,?,?,?)";
+    let sql = "INSERT INTO consultant (consultant_id, img_url, introduction, expertise, price, form, details_img_url) VALUES (?,?,?,?,?,?,?)";
     let img_url = "http://www.rexjoush.com:3000/wxapp/image/consultant/" + fileName;
     let details_img_url = "http://www.rexjoush.com:3000/wxapp/image/consultant_details/" + fileName;
     mysql.connection.query(sql, [consultant_id, img_url, introduction, expertise, price, form, details_img_url], (err, result) => {
