@@ -20,31 +20,31 @@ router.get("/getSwiper", (req, res) => {
                 " FROM" +          // 修改测试名称
                     " banner"; +   // 修改测试简介
 
-        mysql.connection.query(sql, [], (err, result) => {
-            let obj = {};
-            for (let i = 0; i< result.length; i++){
-                obj.fileid = result[i].banner_id;
-                obj.banner_url = result[i].img_url;
-                response.data.push(obj);
-		// 置空
-		obj = {};
-            }
-
-            res.status(200)
-                .send(JSON.stringify(response));
-        })
+    mysql.connection.query(sql, [], (err, result) => {
+        let obj = {};
+        for (let i = 0; i< result.length; i++){
+            obj.fileid = result[i].banner_id;
+            obj.banner_url = result[i].img_url;
+            response.data.push(obj);
+            // 置空
+            obj = {};
+        }
+        res.status(200)
+            .send(JSON.stringify(response));
+    });
 });
 
 
 // 删除轮播图
 router.get("/delSwiper", (req, res) => {
     let banner_id = req.query.fileid;
+    console.log(banner_id);
     try {
         fs.unlinkSync("./public/wxapp/image/banner/" + banner_id + ".jpg");
     } catch (e){
         res.status(200)
             .send({result: 0, err: "删除失败"});
-	throw e;
+	    throw e;
     }
 
     let sql = "DELETE FROM banner WHERE banner_id = ?";
@@ -58,7 +58,7 @@ router.get("/delSwiper", (req, res) => {
     });
 });
 
-// 修改轮播图
+// 上传轮播图
 router.post("/changeSwiper", multipartMiddleware, (req, res) => {
 
     // 获取文件对象
@@ -99,17 +99,10 @@ router.post("/changeSwiper", multipartMiddleware, (req, res) => {
             res.send({result: 0, err: "修改失败"});
             throw err;
         } else {
-            res.status(200)
-                .send({result: 1});
+            res.send({result: 1});
         }
     });
-
-    // 返回登录成功
-    res.status(200)
-        .send({result: 1});
-
 });
-
 
 
 
