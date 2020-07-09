@@ -4,11 +4,22 @@
 	<title>test</title>
 </head>
 <body>
-<form class="addForm" action="/webapp/home/delSwiper" method="post" enctype="multipart/form-data">
+<form class="addForm" action="/webapp/discover/addConsultant" method="post" enctype="multipart/form-data">
 	<div class="form-group">
-		<label>EAP图片</label>
+		<label>咨询师照片</label>
 		<input type="file" name="img_url">
-
+		<label>咨询师姓名</label>
+		<input type="text" name="name">
+		<label>咨询师介绍</label>
+		<input type="text" name="introduction">
+		<label>咨询师擅长领域</label>
+		<input type="text" name="expertise">
+		<label>咨询费用，每小时价格</label>
+		<input type="text" name="price">
+		<label>咨询形式</label>
+		<input type="text" name="form">
+		<label>咨询师的剩余介绍情况（获奖等等，图片形式）</label>
+		<input type="file" name="details_img_url">
 	</div>
 	<button type="submit" class="btn btn-default">修改</button>
 </form>

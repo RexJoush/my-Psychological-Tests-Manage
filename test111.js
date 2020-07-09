@@ -32,6 +32,10 @@ let b = "akdsjfhjksdfhjakshfjkba7816bf8f01cfea414140de5dae2223b00361a396177a9cb4
 // console.log((!(~+[])+{})[--[~+""][+[]]*[~+[]]+~~!+[]]+({}+[])[[~!+[]]*~+[]]);
 const { v4: uuidv4 } = require('uuid');
 // uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-console.log(uuidv4());
+// console.log(uuidv4());
 
+
+let host = require("./util/utils");
+
+console.log(host);
 
