@@ -3,11 +3,8 @@ let router = express.Router();
 let multipart = require('connect-multiparty');
 let multipartMiddleware = multipart();
 let fs = require("fs");
-
 let mysql = require("../../util/mysql");
-
 let uuid = require("uuid");
-
 let host = require("../../util/utils");
 
 // 获取轮播图
@@ -106,31 +103,20 @@ router.post("/changeSwiper", multipartMiddleware, (req, res) => {
     });
 });
 
+// 获取首页显示的心理测试
 router.get("/getHomePsyTest", (req, res) => {
     let response = {
         data: []
     }
-    let obj = {};
-
     let sql =   "SELECT" +
                     " test_id," +  // 测试id
                     " name," +     // 测试名字
                     " introduction" +  // 测试简介
                 " FROM" +
-                    " banner" +  // 修改测试简介
-                " WHERE " +
-                    "is_in_home = 1"; // 查询在首页的信息
+                    " psy_test" +  // 心理测试表
+                " WHERE" +
+                    " is_in_home = 1"; // 查询在首页的信息
 
-    getHome(sql, (result) => {
-        for (let i = 0; i < result.length; i++) {
-            obj.test_id = result[i].test_id;
-            obj.name = result[i].name;
-            obj.introduction = result[i].introduction;
-            response.data.push(obj);
-            // 置空
-            obj = {};
-        }
-    });
     mysql.connection.query(sql, [], (err, result) => {
         let obj = {};
         for (let i = 0; i< result.length; i++){
@@ -146,18 +132,61 @@ router.get("/getHomePsyTest", (req, res) => {
     });
 });
 
+// 获取首页显示的咨询师
+router.get("/getHomeConsultant", (req, res) => {
+    let response = {
+        data: []
+    }
+    let sql =   "SELECT" +
+                    " consultant_id," +  // 咨询师id
+                    " consultant_name," +     // 咨询师名字
+                    " img_url" +  // 咨询师图片地址
+                " FROM" +
+                    " consultant" + // 咨询师表
+                " WHERE" +
+                    " is_in_home = 1"; // 查询在首页的信息
 
-
-// 获取，心理测试，课程，咨询师
-function getHome(sql, callback) {
     mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            callback(result);
+        let obj = {};
+        for (let i = 0; i< result.length; i++){
+            obj.consultant_id = result[i].consultant_id;
+            obj.consultant_name = result[i].consultant_name;
+            obj.img_url = result[i].img_url;
+            response.data.push(obj);
+            // 置空
+            obj = {};
         }
+        res.status(200)
+            .send(JSON.stringify(response));
     });
-}
+});
 
+// 获取首页显示的咨询师
+router.get("/getHomeCourse", (req, res) => {
+    let response = {
+        data: []
+    }
+    let sql =   "SELECT" +
+                    " course_id," +  // 课程id
+                    " title" +  // 课程标题
+                " FROM" +
+                    " course" + // 课程表
+                " WHERE" +
+                    " is_in_home = 1"; // 查询在首页的信息
+
+    mysql.connection.query(sql, [], (err, result) => {
+        let obj = {};
+        for (let i = 0; i< result.length; i++){
+            obj.course_id = result[i].course_id;
+            obj.title = result[i].title;
+            response.data.push(obj);
+            // 置空
+            obj = {};
+        }
+        res.status(200)
+            .send(JSON.stringify(response));
+    });
+});
 
 
 

@@ -77,6 +77,8 @@ router.post("/addPsyTest", multipartMiddleware, (req, res) => {
     });
 });
 
+
+
 // 删除心理测试
 router.get("/delPsyTest", (req, res) => {
     let test_id = req.query.test_id;
@@ -98,6 +100,68 @@ router.get("/delPsyTest", (req, res) => {
         }
     });
 });
+
+
+// 获取测试类别列表
+router.get("/getCategoryList", (req, res) => {
+    let response = {
+        data: []
+    }
+    let obj = {};
+    let sql =   "SELECT" +
+                    " category_id," + // 咨询师 id
+                    " category_name" +  // 咨询师照片
+                " FROM" +
+                    " test_category";
+    mysql.connection.query(sql, [], (err, result) => {
+        for (let i = 0; i < result.length; i++) {
+            obj.category_id = result[i].category_id;
+            obj.category_name = result[i].category_name;
+
+            // 封装数组
+            response.data.push(obj);
+            // 对象置空
+            obj = {};
+        }
+        res.status(200)
+            .send(JSON.stringify(response));
+    });
+});
+
+// 添加测试类别
+router.get("/addCategory", (req, res) => {
+
+    let category_id = uuid.v4(); // 测试 id
+    let category_name = req.query.category_name; // 测试类别名字
+
+    // 更新数据库
+    let sql = "INSERT INTO test_category (category_id, category_name) VALUES (?,?)";
+    mysql.connection.query(sql, [category_id, category_name], (err, result) => {
+        if (err) {
+            res.send({result: 0, err: "上传失败"});
+            throw err;
+        } else {
+            res.send({result: 1});
+        }
+    });
+});
+
+// 删除测试类别
+router.get("/delCategory", (req, res) => {
+
+    let category_id = req.query.category_id; // 测试 id
+    // 更新数据库
+    let sql = "DELETE FROM test_category WHERE category_id = ?";
+    mysql.connection.query(sql, [category_id], (err, result) => {
+        if (err) {
+            res.send({result: 0, err: "删除失败"});
+            throw err;
+        } else {
+            res.send({result: 1});
+        }
+    });
+});
+
 
 // 获取咨询师列表
 router.get("/getConsultantList", (req, res) => {
