@@ -1,9 +1,9 @@
-let sql = "SELECT" +
-    " detail_img_url" +  // 详情图片地址
-    " FROM " +
-    "psy_test" +
-    " WHERE " +
-    " test_id = ?";
+// let sql = "SELECT" +
+//     " detail_img_url" +  // 详情图片地址
+//     " FROM " +
+//     "psy_test" +
+//     " WHERE " +
+//     " test_id = ?";
 
 
 // console.log(sql);
@@ -36,9 +36,18 @@ let mysql = require("./util/mysql");
 
 
 let host = require("./util/utils");
+console.log(host.returnFunc());
 
 let uuid = require("uuid");
 
 console.log(uuid.v4());
-// console.log(host);
-
+// console.log(host)
+let table = "test";
+let id = 1;
+let sql =   "UPDATE" +
+    " " + table +"" +  // 咨询师表
+    " SET" +
+    " is_in_home = 1" +  // 设置在首页为1
+    " WHERE" +
+    " "+ id +" = ?"; // 设置当前咨询师
+console.log(sql);

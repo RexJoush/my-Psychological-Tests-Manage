@@ -5,7 +5,20 @@ let multipartMiddleware = multipart();
 let fs = require("fs");
 let uuid = require("uuid");
 let mysql = require("../../util/mysql");
-let host = require("../../util/utils");
+let utils = require("../../util/utils");
+
+// 操作返回函数
+function returnFunc(err, res){
+    if (err) {
+        res.status(200)
+            .send({result: 0, err: "操作失败"});
+        throw err;
+    } else {
+        res.status(200)
+            .send({result: 1});
+    }
+}
+
 
 
 // 获取心理测试列表
@@ -21,18 +34,21 @@ router.get("/getPsyTestList", (req, res) => {
                 " FROM" +
                     " psy_test";
     mysql.connection.query(sql, [], (err, result) => {
-        for (let i = 0; i < result.length; i++) {
-            obj.test_id = result[i].test_id;
-            obj.name = result[i].name;
-            obj.introduction = result[i].introduction;
+        if (err) throw err;
+        else {
+            for (let i = 0; i < result.length; i++) {
+                obj.test_id = result[i].test_id;
+                obj.name = result[i].name;
+                obj.introduction = result[i].introduction;
 
-            // 封装数组
-            response.data.push(obj);
-            // 对象置空
-            obj = {};
+                // 封装数组
+                response.data.push(obj);
+                // 对象置空
+                obj = {};
+            }
+            res.status(200)
+                .send(JSON.stringify(response));
         }
-        res.status(200)
-            .send(JSON.stringify(response));
     });
 });
 
@@ -44,6 +60,7 @@ router.post("/addPsyTest", multipartMiddleware, (req, res) => {
     let test_id = uuid.v4(); // 测试 id
     let name = req.body.name; // 测试名字
     let introduction = req.body.introduction; // 测试简介
+    let category_id = req.body.category_id; // 测试类别
     // 获取文件对象
     let img = req.files.details_img_url; // 测试详情图片
 
@@ -59,21 +76,17 @@ router.post("/addPsyTest", multipartMiddleware, (req, res) => {
         // 将临时图片删除
         fs.unlinkSync(path);
     } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
+        res.status(200)
+            .send({result: 0, err: "图片上传失败"});
         throw e;
     }
 
     // 更新数据库
-    let sql = "INSERT INTO psy_test (test_id, name, introduction, details_img_url, is_in_home) VALUES (?,?,?,?,?)";
-    let img_url_add = host + "/wxapp/image/test_details/" + fileName;
+    let sql = "INSERT INTO psy_test (test_id, name, introduction, category_id， details_img_url, is_in_home) VALUES (?,?,?,?,?,?)";
+    let img_url_add = utils.host + "/wxapp/image/test_details/" + fileName;
 
-    mysql.connection.query(sql, [test_id, name, introduction, img_url_add], (err, result) => {
-        if (err) {
-            res.send({result: 0, err: "文字上传失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+    mysql.connection.query(sql, [test_id, name, introduction, category_id, img_url_add], (err, result) => {
+        utils.returnFunc(err, res);
     });
 });
 
@@ -93,11 +106,7 @@ router.get("/delPsyTest", (req, res) => {
     let sql = "DELETE FROM psy_test WHERE test_id = ?";
 
     mysql.connection.query(sql, [test_id], (err, result) => {
-        if (err) throw err;
-        else {
-            res.status(200)
-                .send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -114,17 +123,20 @@ router.get("/getCategoryList", (req, res) => {
                 " FROM" +
                     " test_category";
     mysql.connection.query(sql, [], (err, result) => {
-        for (let i = 0; i < result.length; i++) {
-            obj.category_id = result[i].category_id;
-            obj.category_name = result[i].category_name;
+        if (err) throw err;
+        else {
+            for (let i = 0; i < result.length; i++) {
+                obj.category_id = result[i].category_id;
+                obj.category_name = result[i].category_name;
 
-            // 封装数组
-            response.data.push(obj);
-            // 对象置空
-            obj = {};
+                // 封装数组
+                response.data.push(obj);
+                // 对象置空
+                obj = {};
+            }
+            res.status(200)
+                .send(JSON.stringify(response));
         }
-        res.status(200)
-            .send(JSON.stringify(response));
     });
 });
 
@@ -137,12 +149,7 @@ router.get("/addCategory", (req, res) => {
     // 更新数据库
     let sql = "INSERT INTO test_category (category_id, category_name) VALUES (?,?)";
     mysql.connection.query(sql, [category_id, category_name], (err, result) => {
-        if (err) {
-            res.send({result: 0, err: "上传失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -153,12 +160,7 @@ router.get("/delCategory", (req, res) => {
     // 更新数据库
     let sql = "DELETE FROM test_category WHERE category_id = ?";
     mysql.connection.query(sql, [category_id], (err, result) => {
-        if (err) {
-            res.send({result: 0, err: "删除失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -176,18 +178,21 @@ router.get("/getConsultantList", (req, res) => {
                 " FROM" +
                     " consultant";
     mysql.connection.query(sql, [], (err, result) => {
-        for (let i = 0; i < result.length; i++) {
-            obj.consultant_id = result[i].consultant_id;
-            obj.consultant_name = result[i].consultant_name;
-            obj.img_url = result[i].img_url;
+        if (err) throw err;
+        else {
+            for (let i = 0; i < result.length; i++) {
+                obj.consultant_id = result[i].consultant_id;
+                obj.consultant_name = result[i].consultant_name;
+                obj.img_url = result[i].img_url;
 
-            // 封装数组
-            response.data.push(obj);
-            // 对象置空
-            obj = {};
+                // 封装数组
+                response.data.push(obj);
+                // 对象置空
+                obj = {};
+            }
+            res.status(200)
+                .send(JSON.stringify(response));
         }
-        res.status(200)
-            .send(JSON.stringify(response));
     });
 });
 
@@ -223,21 +228,17 @@ router.post("/addConsultant", multipartMiddleware, (req, res) => {
         fs.unlinkSync(path1);
         fs.unlinkSync(path2);
     } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
+        res.status(200)
+            .send({result: 0, err: "图片上传失败"});
         throw e;
     }
 
     // 更新数据库
     let sql = "INSERT INTO consultant (consultant_id, img_url, name, introduction, expertise, price, form, details_img_url, is_in_home) VALUES (?,?,?,?,?,?,?,?,?)";
-    let img_url_add = host + "/wxapp/image/consultant/" + fileName;
-    let details_img_url_add = host + "/wxapp/image/consultant_details/" + fileName;
+    let img_url_add = utils.host + "/wxapp/image/consultant/" + fileName;
+    let details_img_url_add = utils.host + "/wxapp/image/consultant_details/" + fileName;
     mysql.connection.query(sql, [consultant_id, img_url_add, name, introduction, expertise, price, form, details_img_url_add, 0], (err, result) => {
-        if (err) {
-            res.send({result: 0, err: "文字上传失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -256,11 +257,7 @@ router.get("/delConsultant", (req, res) => {
     let sql = "DELETE FROM consultant WHERE consultant_id = ?";
 
     mysql.connection.query(sql, [consultant_id], (err, result) => {
-        if (err) throw err;
-        else {
-            res.status(200)
-                .send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -277,18 +274,21 @@ router.get("/getCourseList", (req, res) => {
                 " FROM" +
                     " course";
     mysql.connection.query(sql, [], (err, result) => {
-        for (let i = 0; i < result.length; i++) {
+        if (err) throw err;
+        else {
+            for (let i = 0; i < result.length; i++) {
 
-            obj.course_id = result[i].course_id;
-            obj.title = result[i].title;
+                obj.course_id = result[i].course_id;
+                obj.title = result[i].title;
 
-            // 封装数组
-            response.data.push(obj);
-            // 对象置空
-            obj = {};
+                // 封装数组
+                response.data.push(obj);
+                // 对象置空
+                obj = {};
+            }
+            res.status(200)
+                .send(JSON.stringify(response));
         }
-        res.status(200)
-            .send(JSON.stringify(response));
     });
 });
 
@@ -323,13 +323,14 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
         fs.unlinkSync(path1);
         fs.unlinkSync(path2);
     } catch (e) {
-        res.send({result: 0, err: "图片上传失败"});
+        res.status(200)
+            .send({result: 0, err: "图片上传失败"});
         throw e;
     }
 
     // 拼接图片地址
-    let img_url_add = host + "/wxapp/image/course/" + name;
-    let details_introduction_img_add = host + "/wxapp/image/course_details/" + name;
+    let img_url_add = utils.host + "/wxapp/image/course/" + name;
+    let details_introduction_img_add = utils.host + "/wxapp/image/course_details/" + name;
 
     let sql =   "INSERT INTO" + 
                     " course" +
@@ -338,12 +339,7 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
                     " (?,?,?,?,?,?,?)";
     // 更新数据库
     mysql.connection.query(sql, [course_id, img_url_add, title, subtitle, details_introduction_img_add, consultant_id, 0], (err, result) => {
-        if (err) {
-            res.send({result: 0, err: "文字上传失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 
@@ -363,11 +359,7 @@ router.get("/delCourse", (req, res) => {
     let sql = "DELETE FROM course WHERE course_id = ?";
 
     mysql.connection.query(sql, [course_id], (err, result) => {
-        if (err) throw err;
-        else {
-            res.status(200)
-                .send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
 });
 

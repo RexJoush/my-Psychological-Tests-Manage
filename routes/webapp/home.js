@@ -5,7 +5,8 @@ let multipartMiddleware = multipart();
 let fs = require("fs");
 let mysql = require("../../util/mysql");
 let uuid = require("uuid");
-let host = require("../../util/utils");
+let utils = require("../../util/utils");
+
 
 // 获取轮播图
 router.get("/getSwiper", (req, res) => {
@@ -31,7 +32,7 @@ router.get("/getSwiper", (req, res) => {
         res.status(200)
             .send(JSON.stringify(response));
     });
-});
+})
 
 
 // 删除轮播图
@@ -49,13 +50,9 @@ router.get("/delSwiper", (req, res) => {
     let sql = "DELETE FROM banner WHERE banner_id = ?";
 
     mysql.connection.query(sql, [banner_id], (err, result) => {
-        if (err) throw err;
-        else {
-            res.status(200)
-                .send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
-});
+})
 
 // 上传轮播图
 router.post("/changeSwiper", multipartMiddleware, (req, res) => {
@@ -92,16 +89,11 @@ router.post("/changeSwiper", multipartMiddleware, (req, res) => {
     // 更新数据库
     let sql =   "INSERT INTO banner (banner_id,img_url) values(?,?)";
     // 拼接图片地址
-    let img_url = host + "/wxapp/image/banner/" + name;
+    let img_url = utils.host + "/wxapp/image/banner/" + name;
     mysql.connection.query(sql,[banner_id,img_url],(err,result)=>{
-        if (err) {
-            res.send({result: 0, err: "修改失败"});
-            throw err;
-        } else {
-            res.send({result: 1});
-        }
+        utils.returnFunc(err, res);
     });
-});
+})
 
 // 获取首页显示的心理测试
 router.get("/getHomePsyTest", (req, res) => {
@@ -130,7 +122,8 @@ router.get("/getHomePsyTest", (req, res) => {
         res.status(200)
             .send(JSON.stringify(response));
     });
-});
+})
+
 
 // 获取首页显示的咨询师
 router.get("/getHomeConsultant", (req, res) => {
@@ -159,9 +152,9 @@ router.get("/getHomeConsultant", (req, res) => {
         res.status(200)
             .send(JSON.stringify(response));
     });
-});
+})
 
-// 获取首页显示的咨询师
+// 获取首页显示的课程
 router.get("/getHomeCourse", (req, res) => {
     let response = {
         data: []
@@ -186,8 +179,77 @@ router.get("/getHomeCourse", (req, res) => {
         res.status(200)
             .send(JSON.stringify(response));
     });
-});
+})
 
+// 首页添加和删除函数
+function changeHome(table, id, value, style, callback) {
+    /*
+        style = 1,添加
+        style = 0,删除
+     */
+    let sql =   "UPDATE" +
+                    " " + table +"" +  // 咨询师表
+                " SET" +
+                    " is_in_home = " + style + // 设置值
+                " WHERE" +
+                    " "+ id +" = ?"; // 设置当前咨询师
+    mysql.connection.query(sql, [value], (err, result) => {
+        if (err) {
+            callback(true);
+        } else {
+            callback(false);
+        }
+    });
+}
+
+
+// 添加首页显示的心理测试
+router.get("/addHomePsyTest", (req, res) => {
+    let test_id = req.query.test_id;
+    changeHome("psy_test", "test_id", test_id, 1, (err) => {
+        utils.returnFunc(err, res);
+    });
+})
+
+// 添加首页显示的咨询师
+router.get("/addHomeConsultant", (req, res) => {
+    let consultant_id = req.query.consultant_id;
+    changeHome("consultant", "consultant_id", consultant_id, 1, (err) => {
+        utils.returnFunc(err, res);
+    });
+})
+
+// 添加首页显示的课程
+router.get("/addHomeCourse", (req, res) => {
+    let course_id = req.query.course_id;
+    changeHome("course", "course_id", course_id, 1, (err) => {
+        utils.returnFunc(err,res);
+    });
+})
+
+// 删除首页显示的心理测试
+router.get("/delHomePsyTest", (req, res) => {
+    let test_id = req.query.test_id;
+    changeHome("psy_test", "test_id", test_id, 0, (err) => {
+        utils.returnFunc(err, res);
+    });
+})
+
+// 删除首页显示的咨询师
+router.get("/delHomeConsultant", (req, res) => {
+    let consultant_id = req.query.consultant_id;
+    changeHome("consultant", "consultant_id", consultant_id, 0, (err) => {
+        utils.returnFunc(err, res);
+    });
+})
+
+// 删除首页显示的课程
+router.get("/delHomeCourse", (req, res) => {
+    let course_id = req.query.course_id;
+    changeHome("course", "course_id", course_id, 0, (err) => {
+        utils.returnFunc(err,res);
+    });
+})
 
 
 // 修改EAP
@@ -242,6 +304,6 @@ router.post("/changeEap", multipartMiddleware, (req, res) => {
             res.send({result: 1});
         }
     });
-});
+})
 
 module.exports = router;
