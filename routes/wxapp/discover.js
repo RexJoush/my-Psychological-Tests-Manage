@@ -12,17 +12,36 @@ let utils = require("../../util/utils");
 router.get('/getPsyTestList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
     res.redirect(301, url);
-})
+});
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getConsultantList";
     res.redirect(301, url);
-})
+});
+
+// 获取课程函数，区别一下线上课程和心理成长活动
+function getCourse(is_course, res){
+    let sql =
+        "SELECT" +
+            " course_id," + // 课程 id
+            " title" +  // 课程名
+        " FROM" +
+            " course" +
+        " WHERE" +
+            " is_course = ?";
+    mysql.connection.query(sql, [is_course], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });
+}
+
 // 获取所有线上课程
 router.get('/getCourseList', (req, res) => {
-    let url = "http://" + req.headers.host + "/webapp/discover/getCourseList";
-    res.redirect(301, url);
-})
+    getCourse(1, res);
+});
+// 获取所有心理成长活动
+router.get("/getPsyGrowList",(req,res)=>{
+    getCourse(0, res);
+});
 
 // 按标签查询心理测试
 router.get("/getPsyTestByCategory", (req, res) => {

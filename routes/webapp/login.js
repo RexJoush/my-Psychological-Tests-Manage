@@ -15,12 +15,13 @@ router.get("/login", (req, res) => {
     let username = req.query.username;
     let password = req.query.password;
 
-    let sql =   "SELECT" +
-                    " password" +
-                " FROM" +
-                    " psy_user" +
-                " WHERE" +
-                    " id = 1";
+    let sql =
+        "SELECT" +
+            " password" +
+        " FROM" +
+            " psy_user" +
+        " WHERE" +
+            " id = 1";
 
     mysql.connection.query(sql,[username],(err, result) =>{
         if (err) throw err;
