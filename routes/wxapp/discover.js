@@ -13,6 +13,7 @@ router.get('/getPsyTestList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
     res.redirect(301, url);
 });
+
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getConsultantList";
@@ -35,9 +36,10 @@ function getCourse(is_course, res){
 }
 
 // 获取所有线上课程
-router.get('/getCourseList', (req, res) => {
+router.get("/getCourseList", (req, res) => {
     getCourse(1, res);
 });
+
 // 获取所有心理成长活动
 router.get("/getPsyGrowList",(req,res)=>{
     getCourse(0, res);

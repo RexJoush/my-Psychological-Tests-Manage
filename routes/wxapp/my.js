@@ -20,7 +20,6 @@ router.use(bodyParser.urlencoded({extended: false}));
 
 // 获取用户的 openid
 router.post('/getOpenid', (req, res) => {
-    // console.log(req.body);
     let iv = req.body.iv;
     let encryptedData = req.body.encryptedData;
     let code = req.body.code;

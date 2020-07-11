@@ -56,7 +56,9 @@ router.post("/addPsyTest", multipartMiddleware, (req, res) => {
     let sql = "INSERT INTO psy_test (test_id, name, introduction, category_id， details_img_url, is_in_home) VALUES (?,?,?,?,?,?)";
     let img_url_add = utils.host + "/wxapp/image/test_details/" + fileName;
 
-    mysql.connection.query(sql, [test_id, name, introduction, category_id, img_url_add], (err, result) => {
+    mysql.connection.query(sql,
+        [test_id, name, introduction, category_id, img_url_add, 0],
+        (err, result) => {
         utils.returnFunc(err, res);
     });
 });
