@@ -35,6 +35,7 @@ CREATE TABLE consultant(
     consultant_id VARCHAR(255), -- 咨询师id
     img_url VARCHAR(255), -- 照片
     consultant_name VARCHAR(20), -- 咨询师名字
+    sex VARCHAR(5), -- 咨询师性别
     introduction VARCHAR(1024), -- 咨询师简介
     expertise VARCHAR(255), -- 擅长领域
     price VARCHAR(20), -- 每小时咨询费用
@@ -44,7 +45,7 @@ CREATE TABLE consultant(
     -- qualification VARCHAR(1024), -- 资格证书
     -- consultation_duration VARCHAR(1024), -- 咨询时长
     details_img_url VARCHAR(255), -- 咨询师详情
-    is_in_home INT, -- 是否在首页显示
+    is_in_home INT -- 是否在首页显示
 );
 
 -- 线上课程表
@@ -57,7 +58,8 @@ CREATE TABLE course (
     consultant_id VARCHAR(255), -- 对应咨询师的id
     course_outline VARCHAR(4096), -- 课程大纲
     course_catalogue VARCHAR(4096), -- 课程目录
-    is_in_home INT, -- 是否在首页显示
+    is_course INT, -- 线上课程还是心理活动，1:课程，0:活动
+    is_in_home INT -- 是否在首页显示
 );
 
 -- eap表

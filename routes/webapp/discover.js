@@ -7,48 +7,19 @@ let uuid = require("uuid");
 let mysql = require("../../util/mysql");
 let utils = require("../../util/utils");
 
-// 操作返回函数
-function returnFunc(err, res){
-    if (err) {
-        res.status(200)
-            .send({result: 0, err: "操作失败"});
-        throw err;
-    } else {
-        res.status(200)
-            .send({result: 1});
-    }
-}
-
 
 
 // 获取心理测试列表
 router.get("/getPsyTestList", (req, res) => {
-    let response = {
-        data: []
-    }
-    let obj = {};
-    let sql =   "SELECT" +
-                    " test_id," + // 测试 id
-                    " name," +  // 测试名字
-                    " introduction" +  // 测试简介
-                " FROM" +
-                    " psy_test";
+    let sql =
+        "SELECT" +
+            " test_id," + // 测试 id
+            " name," +  // 测试名字
+            " introduction" +  // 测试简介
+        " FROM" +
+            " psy_test";
     mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            for (let i = 0; i < result.length; i++) {
-                obj.test_id = result[i].test_id;
-                obj.name = result[i].name;
-                obj.introduction = result[i].introduction;
-
-                // 封装数组
-                response.data.push(obj);
-                // 对象置空
-                obj = {};
-            }
-            res.status(200)
-                .send(JSON.stringify(response));
-        }
+        utils.sendFunc(err, res, result);
     });
 });
 
@@ -113,30 +84,15 @@ router.get("/delPsyTest", (req, res) => {
 
 // 获取测试类别列表
 router.get("/getCategoryList", (req, res) => {
-    let response = {
-        data: []
-    }
-    let obj = {};
-    let sql =   "SELECT" +
-                    " category_id," + // 咨询师 id
-                    " category_name" +  // 咨询师照片
-                " FROM" +
-                    " test_category";
-    mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            for (let i = 0; i < result.length; i++) {
-                obj.category_id = result[i].category_id;
-                obj.category_name = result[i].category_name;
 
-                // 封装数组
-                response.data.push(obj);
-                // 对象置空
-                obj = {};
-            }
-            res.status(200)
-                .send(JSON.stringify(response));
-        }
+    let sql =
+        "SELECT" +
+            " category_id," + // 咨询师 id
+            " category_name" +  // 咨询师照片
+        " FROM" +
+            " test_category";
+    mysql.connection.query(sql, [], (err, result) => {
+        utils.sendFunc(err, res, result);
     });
 });
 
@@ -167,32 +123,16 @@ router.get("/delCategory", (req, res) => {
 
 // 获取咨询师列表
 router.get("/getConsultantList", (req, res) => {
-    let response = {
-        data: []
-    }
-    let obj = {};
-    let sql =  "SELECT" +
-                    " consultant_id," + // 咨询师 id
-                    " consultant_name," +  // 咨询师名字
-                    " img_url" +  // 咨询师照片
-                " FROM" +
-                    " consultant";
-    mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            for (let i = 0; i < result.length; i++) {
-                obj.consultant_id = result[i].consultant_id;
-                obj.consultant_name = result[i].consultant_name;
-                obj.img_url = result[i].img_url;
 
-                // 封装数组
-                response.data.push(obj);
-                // 对象置空
-                obj = {};
-            }
-            res.status(200)
-                .send(JSON.stringify(response));
-        }
+    let sql =
+        "SELECT" +
+            " consultant_id," + // 咨询师 id
+            " consultant_name," +  // 咨询师名字
+            " img_url" +  // 咨询师照片
+        " FROM" +
+            " consultant";
+    mysql.connection.query(sql, [], (err, result) => {
+        utils.sendFunc(err, res, result);
     });
 });
 
@@ -203,7 +143,8 @@ router.post("/addConsultant", multipartMiddleware, (req, res) => {
     let consultant_id = uuid.v4(); // 咨询师 id
 
     let consultant_img = req.files.img_url; // 咨询师头像
-    let name = req.body.name; //咨询师名字
+    let consultant_name = req.body.consultant_name; //咨询师名字
+    let sex = req.body.sex; // 咨询师性别
     let introduction = req.body.introduction // 咨询师简介
     let expertise = req.body.expertise; // 咨询师擅长领域
     let price = req.body.price; // 咨询价格，每小时
@@ -234,10 +175,17 @@ router.post("/addConsultant", multipartMiddleware, (req, res) => {
     }
 
     // 更新数据库
-    let sql = "INSERT INTO consultant (consultant_id, img_url, name, introduction, expertise, price, form, details_img_url, is_in_home) VALUES (?,?,?,?,?,?,?,?,?)";
+    let sql =
+        "INSERT INTO" +
+            " consultant" +
+        " (consultant_id, img_url, consultant_name, sex, introduction, expertise, price, form, details_img_url, is_in_home)" +
+        " VALUES" +
+            " (?,?,?,?,?,?,?,?,?,?)";
     let img_url_add = utils.host + "/wxapp/image/consultant/" + fileName;
     let details_img_url_add = utils.host + "/wxapp/image/consultant_details/" + fileName;
-    mysql.connection.query(sql, [consultant_id, img_url_add, name, introduction, expertise, price, form, details_img_url_add, 0], (err, result) => {
+    mysql.connection.query(sql,
+        [consultant_id, img_url_add, consultant_name, sex, introduction, expertise, price, form, details_img_url_add, 0],
+        (err, result) => {
         utils.returnFunc(err, res);
     });
 });
@@ -264,31 +212,14 @@ router.get("/delConsultant", (req, res) => {
 
 // 获取线上课程列表
 router.get("/getCourseList", (req, res) => {
-    let response = {
-        data: []
-    }
-    let obj = {};
-    let sql =   "SELECT" +
-                    " course_id," + // 课程 id
-                    " title" +  // 课程名
-                " FROM" +
-                    " course";
+    let sql =
+        "SELECT" +
+            " course_id," + // 课程 id
+            " title" +  // 课程名
+        " FROM" +
+            " course";
     mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            for (let i = 0; i < result.length; i++) {
-
-                obj.course_id = result[i].course_id;
-                obj.title = result[i].title;
-
-                // 封装数组
-                response.data.push(obj);
-                // 对象置空
-                obj = {};
-            }
-            res.status(200)
-                .send(JSON.stringify(response));
-        }
+        utils.sendFunc(err, res, result);
     });
 });
 
@@ -303,7 +234,7 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
     let subtitle = req.body.subtitle; // 课程副标题
     let details_introduction_img = req.files.details_introduction_img; // 该课程的详细介绍图片
     let consultant_id = req.body.consultant_id; // 上该门课的老师
-
+    let is_course = req.body.is_course; // 是否是线上课程
 
     let name = course_id + ".jpg";
 
@@ -332,13 +263,14 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
     let img_url_add = utils.host + "/wxapp/image/course/" + name;
     let details_introduction_img_add = utils.host + "/wxapp/image/course_details/" + name;
 
-    let sql =   "INSERT INTO" + 
-                    " course" +
-                " (course_id, img_url, title, subtitle, details_introduction_img, consultant_id, is_in_home) " +
-                " VALUES" +
-                    " (?,?,?,?,?,?,?)";
+    let sql =
+        "INSERT INTO" +
+            " course" +
+        " (course_id, img_url, title, subtitle, details_introduction_img, consultant_id, is_course, is_in_home) " +
+        " VALUES" +
+            " (?,?,?,?,?,?,?,?)";
     // 更新数据库
-    mysql.connection.query(sql, [course_id, img_url_add, title, subtitle, details_introduction_img_add, consultant_id, 0], (err, result) => {
+    mysql.connection.query(sql, [course_id, img_url_add, title, subtitle, details_introduction_img_add, consultant_id, is_course, 0], (err, result) => {
         utils.returnFunc(err, res);
     });
 });
