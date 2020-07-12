@@ -15,27 +15,10 @@ router.get('/getPsyTestList', (req, res) => {
 });
 // 获取所有的心理测试分类标签
 router.get('/getCategoryList', (req, res) => {
-    let category_id = req.query.category_id;
-    if (category_id === "all"){
-        let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
-        res.redirect(301, url);
-    }
-    else {
-        let sql =
-            "SELECT" +
-                " test_id," + // 测试 id
-                " name," +  // 测试名字
-                " introduction" +  // 测试简介
-            " FROM" +
-                " psy_test" +
-            " WHERE" +
-                " category_id = ?";
-        mysql.connection.query(sql, [category_id], (err, result) => {
-            utils.sendFunc(err, res, result);
-        });
-    }
+    let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
+    res.redirect(301, url);
 });
-// 0a1556ad-528a-4ede-a160-d81cf88663f7W
+
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getConsultantList";
@@ -70,20 +53,31 @@ router.get("/getPsyGrowList",(req,res)=>{
 // 按标签查询心理测试
 router.get("/getPsyTestByCategory", (req, res) => {
     let category_id = req.query.category_id;
-    let sql =
-        "SELECT" +
-            " test_id," + // 测试 id
-            " name," +  // 测试名字
-            " introduction" +  // 测试简介
-        " FROM" +
-            " psy_test" +
-        " WHERE" +
-            " category_id = ?";
-    mysql.connection.query(sql, [category_id], (err, result) => {
-        utils.sendFunc(err, res, result);
-    });
-});
 
+    if (category_id === "all"){
+        let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
+        res.redirect(301, url);
+    } else {
+        let sql =
+            "SELECT" +
+                " test_id," + // 测试 id
+                " name," +  // 测试名字
+                " introduction," +  // 测试简介
+                " p.category_id," + // 分类id
+                " category_name" +  // 分类名字
+            " FROM" +
+                " psy_test p,test_category t " +
+            " WHERE" +
+                " p.category_id = t.category_id" +
+            " AND " +
+                " p.category_id = ?";
+        mysql.connection.query(sql, [category_id], (err, result) => {
+            utils.sendFunc(err, res, result);
+        });
+    }
+
+});
+// 0a1556ad-528a-4ede-a160-d81cf88663f7W
 
 // 心理咨询师排序分类
 router.get("/getConsultantByCategory", (req, res) => {
