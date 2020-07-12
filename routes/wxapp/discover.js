@@ -15,10 +15,27 @@ router.get('/getPsyTestList', (req, res) => {
 });
 // 获取所有的心理测试分类标签
 router.get('/getCategoryList', (req, res) => {
-    let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
-    res.redirect(301, url);
+    let category_id = req.query.category_id;
+    if (category_id === "all"){
+        let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
+        res.redirect(301, url);
+    }
+    else {
+        let sql =
+            "SELECT" +
+                " test_id," + // 测试 id
+                " name," +  // 测试名字
+                " introduction" +  // 测试简介
+            " FROM" +
+                " psy_test" +
+            " WHERE" +
+                " category_id = ?";
+        mysql.connection.query(sql, [category_id], (err, result) => {
+            utils.sendFunc(err, res, result);
+        });
+    }
 });
-
+// 0a1556ad-528a-4ede-a160-d81cf88663f7W
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getConsultantList";
