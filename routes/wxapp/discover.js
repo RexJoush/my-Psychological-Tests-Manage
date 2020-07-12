@@ -14,7 +14,7 @@ router.get('/getPsyTestList', (req, res) => {
     res.redirect(301, url);
 });
 // 获取所有的心理测试分类标签
-router.get('/getConsultantList', (req, res) => {
+router.get('/getCategoryList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
     res.redirect(301, url);
 });
