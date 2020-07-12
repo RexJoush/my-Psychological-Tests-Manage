@@ -14,10 +14,10 @@ router.get('/getPsyTestList', (req, res) => {
     res.redirect(301, url);
 });
 // 获取所有的心理测试分类标签
-/*router.get('/getConsultantList', (req, res) => {
+router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
     res.redirect(301, url);
-});*/
+});
 
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
@@ -85,24 +85,61 @@ router.get("/getConsultantByCategory", (req, res) => {
     });
 });
 
+/*
+    与我的页面相关的添加函数
+ */
+
+function addUserData(openId, table, id, value, res) {
+    let date = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    let sql = "INSERT INTO " + table + " (openId, " + id + ", date, time) VALUES (?,?,?,?)";
+    mysql.connection.query(sql, [openId, value, date, time], (err, result) => {
+        utils.returnFunc(err, res);
+    });
+}
+
+
 // 开始心理测试
 router.get("/addUserPsyTest", (req, res) => {
     let openId = req.query.open_id;
     let test_id = req.query.test_id;
-    let test_date = new Date().toLocaleDateString();
-    let test_time = new Date().toLocaleTimeString();
-    let sql = "INSERT INTO user_pst_test (openId, test_id, test_date, test_time) VALUES (?,?,?,?)";
-    mysql.connection.query(sql, [openId, test_id, test_date, test_time], (err, result) => {
-        utils.returnFunc(err, res);
-    });
+    addUserData(openId, "user_psy_test", "test_id", test_id, res);
 });
-// 开始课程
-router.get("/addUserConsultant",(req,res)=>{
 
+// 开始心理课程
+router.get("/addUserCourse", (req, res) => {
+    let openId = req.query.open_id;
+    let course_id = req.query.course_id;
+    addUserData(openId, "user_course", "course_id", course_id, res);
 });
+
+// 开始心理咨询
+router.get("/addUserConsultant", (req, res) => {
+    let openId = req.query.open_id;  // 用户 openId
+    let consultant_id = req.query.consultant_id; // 当前咨询师 id
+    let form = req.query.form;  // 选择的咨询形式
+    let subscribe_time = req.query.subscribe_time; // 申请时间
+    let times = req.query.times; // 申请的预约次数
+    let price = req.query.price; // 花费价格
+    let date = new Date().toLocaleDateString(); // 提交日期
+    let time = new Date().toLocaleTimeString(); // 提交时间
+    let sql = "INSERT INTO user_consultant (openId, consultant_id, form, subscribe_time, times, price, date, time) VALUES (?,?,?,?,?,?,?,?)";
+    mysql.connection.query(sql, [openId, consultant_id, form, subscribe_time, times, price, date, time], (err, result) => {
+        utils.returnFunc(err, res);
+    })
+});
+
+
+
+// 开始心理成长
+/*router.get("/addUserPsyGrow", (req, res) => {
+    let openId = req.query.open_id;
+    let consultant_id = req.query.consultant_id;
+    addUserData(openId, "user_consultant", "consultant_id", consultant_id, res);
+});*/
+
 // 获取咨询师最近15天的时刻表
 router.get("/getSchedule", (req, res) => {
     let consultant_id = req.query.consultant_id;
-
 });
 module.exports = router;

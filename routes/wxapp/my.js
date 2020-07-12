@@ -53,13 +53,13 @@ router.post('/getOpenId', (req, res) => {
                     } else {
                         let sql =
                             "INSERT INTO" +
-                                " psy_user" + // psy_user 表
-                            " (openId, nickName, avatarUrl, gender, city, province, country, first_date, first_time)" + // 添加时间
-                            " VALUES (?,?,?,?,?,?,?,?)";
+                                " wxapp_user" + // wxapp_user 表,存储访问用户
+                            " (openId, nickName, avatarUrl, gender, city, province, country, date, time)" + // 添加时间
+                            " VALUES (?,?,?,?,?,?,?,?,?)";
 
                         // 插入用户数据
                         mysql.connection.query(sql,
-                            [data.openId, data.nickName, data.avatarUrl, data.gender, data.city, data.province, data.country, new Date().toLocaleString()],
+                            [data.openId, data.nickName, data.avatarUrl, data.gender, data.city, data.province, data.country, new Date().toLocaleDateString(), new Date().toLocaleTimeString()],
                             (err, result) => {
                                 if (err) throw err;
                                 else {

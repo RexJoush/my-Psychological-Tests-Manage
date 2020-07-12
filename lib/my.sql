@@ -6,7 +6,7 @@
 */
 
 -- user表
-CREATE TABLE psy_user (
+CREATE TABLE wxapp_user (
     openId VARCHAR(255), -- 用户 openid
     nickName VARCHAR(255), -- 用户的微信名
     avatarUrl VARCHAR(255), -- 用户头像
@@ -14,35 +14,41 @@ CREATE TABLE psy_user (
     city VARCHAR(10), -- 用户城市
     province VARCHAR(10), -- 用户省份
     country VARCHAR(10), -- 用户国家
-    first_date VARCHAR(20), -- 首次访问日期
-    first_time VARCHAR(20) -- 首次访问时间
+    date VARCHAR(20), -- 首次访问日期
+    time VARCHAR(20) -- 首次访问时间
 );
 
 -- 用户心理测试表
 CREATE TABLE user_pst_test (
     openId VARCHAR(255), -- 用户 openid
     test_id VARCHAR(255), -- 用户所做测试的id
-    test_date VARCHAR(30), -- 所做测试的时间
-    test_time VARCHAR(30) -- 所做测试的时间
+    date VARCHAR(30), -- 所做测试的日期
+    time VARCHAR(30) -- 所做测试的时间
 );
 
 -- 用户心理咨询表
-CREATE TABLE user_counseling (
+CREATE TABLE user_consultant (
     openId VARCHAR(255), -- 用户 openid
-    test_id VARCHAR(255), -- 用户所做咨询师的id
-    counseling_time VARCHAR(30) -- 所做咨询的时间
+    consultant_id VARCHAR(255), -- 用户所做咨询师的id
+    form VARCHAR(20), -- 咨询方式
+    subscribe_time VARCHAR(20), -- 预约时间
+    price VARCHAR(10), -- 花费
+    date VARCHAR(30), -- 所做咨询的日期
+    time VARCHAR(30) -- 所做咨询的时间
 );
 
 -- 用户心理课程表
 CREATE TABLE user_course (
     openId VARCHAR(255), -- 用户 openid
-    test_id VARCHAR(255), -- 用户所上课程的id
-    course_time VARCHAR(30) -- 所上课的时间
+    course_id VARCHAR(255), -- 用户所上课程的id
+    date VARCHAR(30), -- 所上课的日期
+    time VARCHAR(30) -- 所上课的时间
 );
 
 -- 用户心理成长表
-CREATE TABLE user_grow (
-    open_id VARCHAR(255), -- 用户 openid
-    test_id VARCHAR(255), -- 用户所做心理成长的id
-    grow_time VARCHAR(30) -- 所做心理成长的时间
-);
+-- CREATE TABLE user_grow (
+--    open_id VARCHAR(255), -- 用户 openid
+--    test_id VARCHAR(255), -- 用户所做心理成长的id
+--    date VARCHAR(30) -- 所做心理成长的日期
+--    time VARCHAR(30) -- 所做心理成长的时间
+-- );
