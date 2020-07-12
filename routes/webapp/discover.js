@@ -15,14 +15,17 @@ router.get("/getPsyTestList", (req, res) => {
         "SELECT" +
             " test_id," + // 测试 id
             " name," +  // 测试名字
-            " introduction" +  // 测试简介
+            " introduction," +  // 测试简介
+            " p.category_id," + // 分类id
+            " category_name" +  // 分类名字
         " FROM" +
-            " psy_test";
+            " psy_test p,test_category t " +
+        " WHERE" +
+            " p.category_id = t.category_id";
     mysql.connection.query(sql, [], (err, result) => {
         utils.sendFunc(err, res, result);
     });
 });
-
 
 
 // 添加心理测试

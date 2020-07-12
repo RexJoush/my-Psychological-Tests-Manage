@@ -14,10 +14,10 @@ router.get('/getPsyTestList', (req, res) => {
     res.redirect(301, url);
 });
 // 获取所有的心理测试分类标签
-router.get('/getConsultantList', (req, res) => {
+/*router.get('/getConsultantList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
     res.redirect(301, url);
-});
+});*/
 
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
@@ -96,7 +96,10 @@ router.get("/addUserPsyTest", (req, res) => {
         utils.returnFunc(err, res);
     });
 });
+// 开始课程
+router.get("/addUserConsultant",(req,res)=>{
 
+});
 // 获取咨询师最近15天的时刻表
 router.get("/getSchedule", (req, res) => {
     let consultant_id = req.query.consultant_id;

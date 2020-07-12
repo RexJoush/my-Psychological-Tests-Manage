@@ -21,4 +21,20 @@ let uuid = require("uuid");
 
 let date = new Date();
 
-console.log(date.toLocaleTimeString());
+// console.log(date.toLocaleTimeString());
+
+let sql =
+    "SELECT" +
+    " test_id," + // 测试 id
+    " name," +  // 测试名字
+    " introduction," +  // 测试简介
+    " p.category_id," +
+    " category_name" +  // 测试简介
+    " FROM" +
+    " psy_test p,test_category t " +
+    " WHERE" +
+    " p.category_id = t.category_id";
+    console.log(sql);
+mysql.connection.query(sql,[],(err,result)=>{
+    console.log(result);
+})
