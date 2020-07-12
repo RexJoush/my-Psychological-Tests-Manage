@@ -13,6 +13,11 @@ router.get('/getPsyTestList', (req, res) => {
     let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
     res.redirect(301, url);
 });
+// 获取所有的心理测试分类标签
+router.get('/getConsultantList', (req, res) => {
+    let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
+    res.redirect(301, url);
+});
 
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
@@ -66,16 +71,35 @@ router.get("/getPsyTestByCategory", (req, res) => {
 // 心理咨询师排序分类
 router.get("/getConsultantByCategory", (req, res) => {
     let category_name = req.query.category_name;
+    let value = req.query.value;
     let sql =
         "SELECT" +
-            " test_id," + // 测试 id
-            " name," +  // 测试名字
-            " introduction" +  // 测试简介
+            " consultant_id," + // 咨询师 id
+            " consultant_name," +  // 咨询师名字
+            " img_url" +  // 咨询师照片
         " FROM" +
-            " psy_test" +
-        " WHERE" +
-            " category_id = ?";
+            " consultant" + // 咨询师表
+        " WHERE " + category_name  + " = ?";
+    mysql.connection.query(sql, [value], (err,result)=>{
+        utils.sendFunc(err, res, result);
+    });
 });
 
+// 开始心理测试
+router.get("/addUserPsyTest", (req, res) => {
+    let openId = req.query.open_id;
+    let test_id = req.query.test_id;
+    let test_date = new Date().toLocaleDateString();
+    let test_time = new Date().toLocaleTimeString();
+    let sql = "INSERT INTO user_pst_test (openId, test_id, test_date, test_time) VALUES (?,?,?,?)";
+    mysql.connection.query(sql, [openId, test_id, test_date, test_time], (err, result) => {
+        utils.returnFunc(err, res);
+    });
+});
 
+// 获取咨询师最近15天的时刻表
+router.get("/getSchedule", (req, res) => {
+    let consultant_id = req.query.consultant_id;
+
+});
 module.exports = router;

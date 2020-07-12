@@ -147,12 +147,7 @@ router.get("/getEapDetails", (req, res) => {
             " details_img_url" +  // 详情图片地址
         " FROM eap";
     mysql.connection.query(sql, [], (err, result) => {
-        if (err) throw err;
-        else {
-            // let obj = {};
-            // obj.detail_img_url = result[0].detail_img_url;
-            res.send(result[0].details_img_url);
-        }
+        utils.sendFunc(err, res, result);
     });
 });
 

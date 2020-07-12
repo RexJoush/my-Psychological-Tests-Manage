@@ -1,12 +1,3 @@
-// let sql = "SELECT" +
-//     " detail_img_url" +  // 详情图片地址
-//     " FROM " +
-//     "psy_test" +
-//     " WHERE " +
-//     " test_id = ?";
-
-
-// console.log(sql);
 
 let utility = require("utility");
 
@@ -21,33 +12,13 @@ let b = "akdsjfhjksdfhjakshfjkba7816bf8f01cfea414140de5dae2223b00361a396177a9cb4
 
 let mysql = require("./util/mysql");
 
-// mysql.connection.query("select password from psy_user where username = 'admin'",(err, result)=>{
-//
-//     // console.log(result[0].password === utility.sha1(a));
-//     console.log(result[0].password);
-// });
-
-// mysql.connection.query()
-
-// console.log((!(~+[])+{})[--[~+""][+[]]*[~+[]]+~~!+[]]+({}+[])[[~!+[]]*~+[]]);
-// const { v4: uuidv4 } = require('uuid');
-// uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-// console.log(uuidv4());
 
 
-let host = require("./util/utils");
-console.log(host.returnFunc());
+let utils = require("./util/utils");
+// console.log(host.returnFunc());
 
 let uuid = require("uuid");
 
-console.log(uuid.v4());
-// console.log(host)
-let table = "test";
-let id = 1;
-let sql =   "UPDATE" +
-    " " + table +"" +  // 咨询师表
-    " SET" +
-    " is_in_home = 1" +  // 设置在首页为1
-    " WHERE" +
-    " "+ id +" = ?"; // 设置当前咨询师
-console.log(sql);
+let date = new Date();
+
+console.log(date.toLocaleTimeString());

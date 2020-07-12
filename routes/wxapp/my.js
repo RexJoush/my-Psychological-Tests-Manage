@@ -19,7 +19,7 @@ router.use(bodyParser.urlencoded({extended: false}));
 
 
 // 获取用户的 openid
-router.post('/getOpenid', (req, res) => {
+router.post('/getOpenId', (req, res) => {
     let iv = req.body.iv;
     let encryptedData = req.body.encryptedData;
     let code = req.body.code;
@@ -53,16 +53,9 @@ router.post('/getOpenid', (req, res) => {
                     } else {
                         let sql =
                             "INSERT INTO" +
-                            " psy_user" + // psy_user 表
-                            " (openId," + // 用户 openId
-                            "nickName," + // 用户微信名
-                            "avatarUrl," + // 用户头像
-                            "gender," + // 用户性别
-                            "city," + // 用户城市
-                            "province," + // 用户省份
-                            "country," +  // 用户国家
-                            "times)" + // 添加时间
-                            " values (?,?,?,?,?,?,?,?)";
+                                " psy_user" + // psy_user 表
+                            " (openId, nickName, avatarUrl, gender, city, province, country, first_date, first_time)" + // 添加时间
+                            " VALUES (?,?,?,?,?,?,?,?)";
 
                         // 插入用户数据
                         mysql.connection.query(sql,
