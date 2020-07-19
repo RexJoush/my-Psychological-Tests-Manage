@@ -87,11 +87,12 @@ router.get("/getConsultantDetails", (req, res) => {
             " consultant_id," + // 咨询师id
             " img_url," +       // 咨询师照片
             " consultant_name," +  // 咨询师姓名
-            " subscribe_time," +   // 咨询师性别
-            " times," +         // 咨询师简介
-            " price," +          // 咨询费用
-            " date," +           // 咨询形式
-            " time" +       // 咨询师其他内容详情
+            " sex," +           // 咨询师性别
+            " expertise," +      // 咨询领域
+            " introduction," +   // 咨询师介绍
+            " price," +           // 咨询价格
+            " form," +           // 咨询形式
+            " details_img_url" +       // 咨询师其他内容详情
         " FROM" +
             " consultant" +  // 咨询师表
         " WHERE" +
