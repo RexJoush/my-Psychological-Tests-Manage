@@ -30,7 +30,8 @@ function getCourse(is_course, res){
     let sql =
         "SELECT" +
             " course_id," + // 课程 id
-            " title" +  // 课程名
+            " title," +  // 课程名
+            " price" +  // 课程价格
         " FROM" +
             " course" +
         " WHERE" +
@@ -75,7 +76,6 @@ router.get("/getPsyTestByCategory", (req, res) => {
             utils.sendFunc(err, res, result);
         });
     }
-
 });
 // 0a1556ad-528a-4ede-a160-d81cf88663f7W
 
@@ -100,33 +100,45 @@ router.get("/getConsultantByCategory", (req, res) => {
     与我的页面相关的添加函数
  */
 
-function addUserData(openId, table, id, value, res) {
+/*function addUserData(openId, table, id, value, res) {
     let date = new Date().toLocaleDateString();
     let time = new Date().toLocaleTimeString();
     let sql = "INSERT INTO " + table + " (openId, " + id + ", date, time) VALUES (?,?,?,?)";
     mysql.connection.query(sql, [openId, value, date, time], (err, result) => {
         utils.returnFunc(err, res);
     });
-}
+}*/
 
 
 // 开始心理测试
 router.get("/addUserPsyTest", (req, res) => {
-    let openId = req.query.open_id;
+    let openId = req.query.openId;
     let test_id = req.query.test_id;
-    addUserData(openId, "user_psy_test", "test_id", test_id, res);
+    let date = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    let sql = "INSERT INTO user_psy_test (openId, test_id, date, time) VALUES (?,?,?,?)";
+    mysql.connection.query(sql, [openId, test_id, date, time], (err, result) => {
+        utils.returnFunc(err, res);
+    });
 });
 
 // 开始心理课程
 router.get("/addUserCourse", (req, res) => {
-    let openId = req.query.open_id;
+    let openId = req.query.openId;
     let course_id = req.query.course_id;
-    addUserData(openId, "user_course", "course_id", course_id, res);
+    let price = req.query.price;
+    //addUserData(openId, "user_course", "course_id", course_id, res);
+    let date = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    let sql = "INSERT INTO user_course (openId, course_id, price, date, time) VALUES (?,?,?,?,?)";
+    mysql.connection.query(sql, [openId, course_id, price, date, time], (err, result) => {
+        utils.returnFunc(err, res);
+    });
 });
 
 // 开始心理咨询
 router.get("/addUserConsultant", (req, res) => {
-    let openId = req.query.open_id;  // 用户 openId
+    let openId = req.query.openId;  // 用户 openId
     let consultant_id = req.query.consultant_id; // 当前咨询师 id
     let form = req.query.form;  // 选择的咨询形式
     let subscribe_time = req.query.subscribe_time; // 申请时间
@@ -144,13 +156,13 @@ router.get("/addUserConsultant", (req, res) => {
 
 // 开始心理成长
 /*router.get("/addUserPsyGrow", (req, res) => {
-    let openId = req.query.open_id;
+    let openId = req.query.openId;
     let consultant_id = req.query.consultant_id;
     addUserData(openId, "user_consultant", "consultant_id", consultant_id, res);
 });*/
 
 // 获取咨询师最近15天的时刻表
-router.get("/getSchedule", (req, res) => {
-    let consultant_id = req.query.consultant_id;
-});
+// router.get("/getSchedule", (req, res) => {
+//     let consultant_id = req.query.consultant_id;
+// });
 module.exports = router;

@@ -59,6 +59,7 @@ CREATE TABLE course (
     course_outline VARCHAR(4096), -- 课程大纲
     course_catalogue VARCHAR(4096), -- 课程目录
     is_course INT, -- 线上课程还是心理活动，1:课程，0:活动
+    price VARCHAR(11), -- 课程价格
     is_in_home INT -- 是否在首页显示
 );
 

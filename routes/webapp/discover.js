@@ -239,6 +239,7 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
     let subtitle = req.body.subtitle; // 课程副标题
     let details_introduction_img = req.files.details_introduction_img; // 该课程的详细介绍图片
     let consultant_id = req.body.consultant_id; // 上该门课的老师
+    let price = req.body.price; // 上该门课的老师
     let is_course = req.body.is_course; // 是否是线上课程
 
     let name = course_id + ".jpg";
@@ -271,11 +272,11 @@ router.post("/addCourse", multipartMiddleware, (req, res) => {
     let sql =
         "INSERT INTO" +
             " course" +
-        " (course_id, img_url, title, subtitle, details_introduction_img, consultant_id, is_course, is_in_home) " +
+        " (course_id, img_url, title, subtitle, details_introduction_img, consultant_id, price, is_course, is_in_home) " +
         " VALUES" +
-            " (?,?,?,?,?,?,?,?)";
+            " (?,?,?,?,?,?,?,?,?)";
     // 更新数据库
-    mysql.connection.query(sql, [course_id, img_url_add, title, subtitle, details_introduction_img_add, consultant_id, is_course, 0], (err, result) => {
+    mysql.connection.query(sql, [course_id, img_url_add, title, subtitle, details_introduction_img_add, consultant_id, price, is_course, 0], (err, result) => {
         utils.returnFunc(err, res);
     });
 });

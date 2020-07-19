@@ -86,11 +86,12 @@ router.get("/getConsultantDetails", (req, res) => {
         "SELECT" +
             " consultant_id," + // 咨询师id
             " img_url," +       // 咨询师照片
-            " introduction," +  // 咨询师简介
-            " expertise," +     // 咨询师擅长领域
+            " consultant_name," +  // 咨询师姓名
+            " subscribe_time," +   // 咨询师性别
+            " times," +         // 咨询师简介
             " price," +          // 咨询费用
-            " form," +           // 咨询形式
-            " details_img_url" + // 咨询师其他内容详情
+            " date," +           // 咨询形式
+            " time" +       // 咨询师其他内容详情
         " FROM" +
             " consultant" +  // 咨询师表
         " WHERE" +
@@ -109,7 +110,8 @@ router.get("/getCourseData", (req, res) => {
             " course_id," +  // 课程id
             " img_url," + // 课程图片
             " title," +   // 课程标题
-            " subtitle" + // 课程副标题
+            " subtitle," + // 课程副标题
+            " price" + // 课程价格
         " FROM" +
             " course" +  // 课程表
         " WHERE" +

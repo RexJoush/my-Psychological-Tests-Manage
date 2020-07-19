@@ -8,6 +8,7 @@ let request = require("request");
 let WXBizDataCrypt = require('../../util/WXBizDataCrypt');
 
 let mysql = require("../../util/mysql");
+let utils = require("../../util/utils");
 
 
 // 获取用户openid数据
@@ -73,8 +74,105 @@ router.post('/getOpenId', (req, res) => {
     });
 });
 
+// 获取用户做过的心理测试
+router.get("/getUserPsyTest",(req,res)=>{
+    let openId = req.query.openId;
+    let sql =
+        "SELECT" +
+            " p.test_id," +   // 测试的 id
+            " name," +       // 测试的名字
+            " introduction," +  // 测试简介
+            " date," +     // 测试的日期
+            " time" +       // 测试的时间
+        " FROM" +
+            " psy_test p,user_psy_test u" +  // 咨询师表
+        " WHERE" +
+            " p.test_id = u.test_id" + // 连接条件
+        " AND" +
+            " openId = ?";  // 筛选该用户的测试
+    mysql.connection.query(sql, [openId], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });
+})
 
-// router.get("/get");
+// 获取用户做过的心理咨询
+router.get("/getUserConsultant", (req, res) => {
+    let openId = req.query.openId;
+    let sql =
+        "SELECT" +
+            " c.consultant_id," + // 咨询师id
+            " c.consultant_name," +  // 咨询师姓名
+            " u.form," +          // 咨询形式
+            " u.price," +           // 咨询总价格
+            " u.subscribe_time," +  // 咨询预约时间
+            " u.times," +           // 预约次数
+            " u.date," +           // 咨询申请日期
+            " u.time" +           // 咨询申请时间
+        " FROM" +
+            " consultant as c,user_consultant as u" +  // 咨询师表和用户咨询师表
+        " WHERE" +
+            " c.consultant_id = u.consultant_id" + // 连接条件
+        " AND" +
+            " openId = ?";  // 筛选在首页的信息
 
+    // 执行查询并返回
+    mysql.connection.query(sql, [openId], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });
+})
+
+
+// 获取用户的线上课程或者是心理成长
+function getUserCourse(openId, is_course, res){
+    let sql =
+        "SELECT" +
+            " c.course_id," + // 课程id
+            " c.title," +  // 课程名
+            " u.price," +  // 课程价格
+            " u.date," +   // 课程申请日期
+            " u.time" +    // 课程申请时间
+        " FROM" +
+            " course as c,user_course as u" +  // 咨询师表和用户咨询师表
+        " WHERE" +
+                " c.course_id = u.course_id" + // 连接条件
+            " AND" +
+                " openId = ?" +  // 筛选在首页的信息
+            " AND" +
+                " c.is_course = ?";  // 筛选在首页的信息
+    // 执行查询并返回
+    mysql.connection.query(sql, [openId, is_course], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });
+}
+router.get("/getUserCourse", (req, res) => {
+    let openId = req.query.openId;
+
+    getUserCourse(openId, 1, res);
+
+    /*let sql =
+        "SELECT" +
+            " c.course_id," + // 咨询师id
+            " c.name," +  // 咨询师姓名
+            " u.price," +           // 咨询总价格
+            " u.date," +           // 咨询申请日期
+            " u.time" +           // 咨询申请时间
+        " FROM" +
+            " course as c,user_course as u" +  // 咨询师表和用户咨询师表
+        " WHERE" +
+            " c.course_id = u.course_id" + // 连接条件
+        " AND" +
+            " openId = ?";  // 筛选在首页的信息
+
+    // 执行查询并返回
+    mysql.connection.query(sql, [openId], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });*/
+})
+
+// 获取用户做过的心理成长
+router.get("/getUserGrow", (req, res) => {
+    let openId = req.query.openId;
+    getUserCourse(openId, 0, res);
+})
 
 module.exports = router;

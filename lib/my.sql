@@ -31,16 +31,18 @@ CREATE TABLE user_consultant (
     openId VARCHAR(255), -- 用户 openid
     consultant_id VARCHAR(255), -- 用户所做咨询师的id
     form VARCHAR(20), -- 咨询方式
-    subscribe_time VARCHAR(20), -- 预约时间
+    subscribe_time VARCHAR(20), -- 预约咨询的日期
+    times VARCHAR(11), -- 咨询次数
     price VARCHAR(10), -- 花费
-    date VARCHAR(30), -- 所做咨询的日期
-    time VARCHAR(30) -- 所做咨询的时间
+    date VARCHAR(30), -- 申请发起日期
+    time VARCHAR(30) -- 申请发起时间
 );
 
 -- 用户心理课程表
 CREATE TABLE user_course (
     openId VARCHAR(255), -- 用户 openid
     course_id VARCHAR(255), -- 用户所上课程的id
+    price VARCHAR(11), -- 上课的价格
     date VARCHAR(30), -- 所上课的日期
     time VARCHAR(30) -- 所上课的时间
 );

@@ -25,16 +25,21 @@ let date = new Date();
 
 let sql =
     "SELECT" +
-    " test_id," + // 测试 id
-    " name," +  // 测试名字
-    " introduction," +  // 测试简介
-    " p.category_id," +
-    " category_name" +  // 测试简介
+        " c.consultant_id," + // 咨询师id
+        " c.consultant_name," +  // 咨询师姓名
+        " u.form," +          // 咨询形式
+        " u.price," +           // 咨询总价格
+        " u.subscribe_time," +  // 咨询预约时间
+        " u.times," +           // 预约次数
+        " u.date," +           // 咨询申请日期
+        " u.time" +           // 咨询申请时间
     " FROM" +
-    " psy_test p,test_category t " +
+        " consultant as c,user_consultant as u" +  // 咨询师表和用户咨询师表
     " WHERE" +
-    " p.category_id = t.category_id";
+        " c.consultant_id = u.consultant_id" + // 连接条件
+    " AND" +
+        " openId = ?";  // 筛选在首页的信息
     console.log(sql);
-mysql.connection.query(sql,[],(err,result)=>{
+mysql.connection.query(sql,["111"],(err,result)=>{
     console.log(result);
 })
