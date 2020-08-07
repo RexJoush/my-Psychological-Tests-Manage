@@ -4,6 +4,8 @@
 let express = require("express");
 let router = express.Router();
 let bodyParser = require("body-parser");
+let multipart = require('connect-multiparty');
+let multipartMiddleware = multipart();
 let request = require("request");
 let WXBizDataCrypt = require('../../util/WXBizDataCrypt');
 
@@ -12,18 +14,25 @@ let utils = require("../../util/utils");
 
 
 // 获取用户openid数据
-let appId = "wxf5518fc768f007a8";
-let SECRET = "56d26bb6424881262fa915ced89f7c11";
+// let appId = "wxf5518fc768f007a8";
+// let SECRET = "56d26bb6424881262fa915ced89f7c11";
 
+let appId = "wxadb4444d6b053354";
+let SECRET = "96f8c1c9d3a8761381836c25b95ed99d";
+//
 // 设置处理post的中间件
-router.use(bodyParser.urlencoded({extended: false}));
+// router.use(bodyParser.urlencoded({extended: false}));
 
 
 // 获取用户的 openid
-router.post('/getOpenId', (req, res) => {
-    let iv = req.body.iv;
-    let encryptedData = req.body.encryptedData;
-    let code = req.body.code;
+router.get("/getOpenId",(req,res)=>{
+    let iv = req.query.iv;
+    let encryptedData = req.query.encryptedData;
+    let code = req.query.code;
+
+    // console.log(iv);
+    // console.log(encryptedData);
+    // console.log(code);
 
     request({
         url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' +
@@ -33,19 +42,20 @@ router.post('/getOpenId', (req, res) => {
             '&js_code=' +
             code +
             '&grant_type=authorization_code',
-        method: "POST",
+        method: "GET",
         json: true,
         headers: {
             "content-type": "application/json",
         },
     }, function (error, response, body) {
+        console.log(body);
         if (!error && response.statusCode === 200) {
             // 解密获取数据
             let pc = new WXBizDataCrypt(appId, body.session_key);
             let data = pc.decryptData(encryptedData, iv);
-
-            // 先查重
-            mysql.connection.query("select * from psy_user where openId = ?", [data.openId], (err, result) => {
+            console.log(data);
+            // res.send(data.openId);
+            mysql.connection.query("select * from wxapp_user where openId = ?", [data.openId], (err, result) => {
                 if (err) throw err;
                 else {
                     // 用户存在，则不用插入
@@ -54,7 +64,7 @@ router.post('/getOpenId', (req, res) => {
                     } else {
                         let sql =
                             "INSERT INTO" +
-                                " wxapp_user" + // wxapp_user 表,存储访问用户
+                            " wxapp_user" + // wxapp_user 表,存储访问用户
                             " (openId, nickName, avatarUrl, gender, city, province, country, date, time)" + // 添加时间
                             " VALUES (?,?,?,?,?,?,?,?,?)";
 
@@ -70,9 +80,11 @@ router.post('/getOpenId', (req, res) => {
                     }
                 }
             })
+
         }
     });
-});
+})
+
 
 // 获取用户做过的心理测试
 router.get("/getUserPsyTest",(req,res)=>{
