@@ -80,7 +80,7 @@ router.get("/getPsyTestByCategory", (req, res) => {
 // 0a1556ad-528a-4ede-a160-d81cf88663f7W
 
 // 心理咨询师排序分类
-router.get("/getConsultantByCategory", (req, res) => {
+/*router.get("/getConsultantByCategory", (req, res) => {
     let category_name = req.query.category_name;
     let value = req.query.value;
     let sql =
@@ -94,7 +94,28 @@ router.get("/getConsultantByCategory", (req, res) => {
     mysql.connection.query(sql, [value], (err,result)=>{
         utils.sendFunc(err, res, result);
     });
+});*/
+
+// 按标签获取心里咨询师
+router.get("/getConsultantByCategory", (req, res) =>{
+    let secondCateId = req.query.secondCateId;
+    let sql = "SELECT consultant_id, consultant_name, img_url FROM consultant ";
+    // "secondCateId":  "1",        // 按擅长领域分类
+    //                  "2",         // 价格分类
+    //                  "3",        // 男
+    //                  "4",        // 女
+    switch (secondCateId){
+        case "1": sql += "GROUP BY expertise"; break;
+        case "2": sql += "ORDER BY price ASC"; break;
+        case "3": sql += "WHERE sex = '男'"; break;
+        case "4": sql += "WHERE sex = '女'"; break;
+    }
+
+    mysql.connection.query(sql, [], (err, result) => {
+        utils.sendFunc(err, res, result);
+    });
 });
+
 
 /*
     与我的页面相关的添加函数
