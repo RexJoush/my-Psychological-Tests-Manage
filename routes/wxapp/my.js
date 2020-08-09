@@ -30,9 +30,9 @@ router.get("/getOpenId",(req,res)=>{
     let encryptedData = req.query.encryptedData;
     let code = req.query.code;
 
-    // console.log(iv);
-    // console.log(encryptedData);
-    // console.log(code);
+    console.log(iv);
+    console.log(encryptedData);
+    console.log(code);
 
     request({
         url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' +
