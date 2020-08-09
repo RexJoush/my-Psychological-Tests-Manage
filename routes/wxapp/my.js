@@ -49,7 +49,8 @@ router.get("/getOpenId",(req,res)=>{
         },
     }, function (error, response, body) {
         console.log(body);
-        if (!error && response.statusCode === 200) {
+        res.send(body.openid);
+        /*if (!error && response.statusCode === 200) {
             // 解密获取数据
             let pc = new WXBizDataCrypt(appId, body.session_key);
             let data = pc.decryptData(encryptedData, iv);
@@ -81,7 +82,7 @@ router.get("/getOpenId",(req,res)=>{
                 }
             })
 
-        }
+        }*/
     });
 })
 
