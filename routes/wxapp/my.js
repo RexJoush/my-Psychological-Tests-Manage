@@ -14,11 +14,11 @@ let utils = require("../../util/utils");
 
 
 // 获取用户openid数据
-// let appId = "wxf5518fc768f007a8";
-// let SECRET = "56d26bb6424881262fa915ced89f7c11";
+let appId = "wxf5518fc768f007a8";
+let SECRET = "56d26bb6424881262fa915ced89f7c11";
 
-let appId = "wxadb4444d6b053354";
-let SECRET = "96f8c1c9d3a8761381836c25b95ed99d";
+// let appId = "wxadb4444d6b053354";
+// let SECRET = "96f8c1c9d3a8761381836c25b95ed99d";
 //
 // 设置处理post的中间件
 // router.use(bodyParser.urlencoded({extended: false}));
