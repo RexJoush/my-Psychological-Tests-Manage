@@ -123,13 +123,11 @@ router.get("/getCourseData", (req, res) => {
 });
 
 
-
-
-
 // 获取EAP简介
 router.get("/getEap", (req, res) => {
     let sql =
         "SELECT" +
+            " eap_id," + // id
             " img_url," + // 图片
             " title," +  // 标题
             " subtitle" + // 副标题
