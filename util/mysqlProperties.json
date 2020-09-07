@@ -1,7 +1,7 @@
 {
-  "host" : "101.32.22.170",
+  "host" : "localhost",
   "user"     : "wxapp",
-  "password" : "ArtCpeyyH8C5TGL6",
+  "password" : "42cfe58025bc46e4",
   "port": "3306",
   "database": "wxapp"
 }
