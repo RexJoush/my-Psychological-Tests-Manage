@@ -1,4 +1,4 @@
-exports.host = "http://www.rexjoush.com:3000";
+exports.host = "https://www.xinliceliang.com:39666";
 exports.returnFunc = function (err, res) {
     if (err) {
         res.status(200)
