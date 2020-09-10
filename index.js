@@ -1,5 +1,7 @@
 let express = require("express");
 let app = express();
+let https = require("https");
+let fs = require("fs");
 
 
 // 配置跨域
@@ -29,6 +31,10 @@ app.use("/webapp/discover",webappDiscoverRouter);
     上传文件 multer
  */
 
+let server = https.createServer({
+    key: fs.readFileSync("./util/2_www.xinliceliang.com.key"),
+    cert: fs.readFileSync("./util/1_www.xinliceliang.com_bundle.crt"),
+},app);
 
 
 app.use(express.static("./public"));
@@ -50,4 +56,4 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(39666);
+server.listen(39666);
