@@ -14,8 +14,8 @@ let utils = require("../../util/utils");
 
 
 // 获取用户openid数据
-let appId = "wxf5518fc768f007a8";
-let SECRET = "56d26bb6424881262fa915ced89f7c11";
+let appId = "wxb731f13170eb52d2";
+let SECRET = "ce72cf37dd5c8c94496a3d977cffdb8e";
 
 // let appId = "wxadb4444d6b053354";
 // let SECRET = "96f8c1c9d3a8761381836c25b95ed99d";
