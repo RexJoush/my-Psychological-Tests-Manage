@@ -10,18 +10,18 @@ let utils = require("../../util/utils");
 
 // 获取所有的心理测试
 router.get('/getPsyTestList', (req, res) => {
-    let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
+    let url = "https://" + req.headers.host + "/webapp/discover/getPsyTestList";
     res.redirect(301, url);
 });
 // 获取所有的心理测试分类标签
 router.get('/getCategoryList', (req, res) => {
-    let url = "http://" + req.headers.host + "/webapp/discover/getCategoryList";
+    let url = "https://" + req.headers.host + "/webapp/discover/getCategoryList";
     res.redirect(301, url);
 });
 
 // 获取所有咨询师
 router.get('/getConsultantList', (req, res) => {
-    let url = "http://" + req.headers.host + "/webapp/discover/getConsultantList";
+    let url = "https://" + req.headers.host + "/webapp/discover/getConsultantList";
     res.redirect(301, url);
 });
 
@@ -56,7 +56,7 @@ router.get("/getPsyTestByCategory", (req, res) => {
     let category_id = req.query.category_id;
 
     if (category_id === "all"){
-        let url = "http://" + req.headers.host + "/webapp/discover/getPsyTestList";
+        let url = "https://" + req.headers.host + "/webapp/discover/getPsyTestList";
         res.redirect(301, url);
     } else {
         let sql =

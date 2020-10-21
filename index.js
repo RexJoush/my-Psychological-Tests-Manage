@@ -31,10 +31,10 @@ app.use("/webapp/discover",webappDiscoverRouter);
     上传文件 multer
  */
 
-// let server = https.createServer({
-//     key: fs.readFileSync("./util/2_www.xinliceliang.com.key"),
-//     cert: fs.readFileSync("./util/1_www.xinliceliang.com_bundle.crt"),
-// },app);
+let server = https.createServer({
+    key: fs.readFileSync("./util/2_www.xinliceliang.com.key"),
+    cert: fs.readFileSync("./util/1_www.xinliceliang.com_bundle.crt"),
+},app);
 
 
 app.use(express.static("./public"));
@@ -56,5 +56,5 @@ app.get("/", (req, res) => {
 });
 
 
-// server.listen(39666);
-app.listen(39666);
+server.listen(39666);
+// app.listen(39666);
