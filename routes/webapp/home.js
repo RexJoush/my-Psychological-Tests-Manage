@@ -25,7 +25,7 @@ router.get("/delSwiper", (req, res) => {
     let banner_id = req.query.banner_id;
     console.log(banner_id);
     try {
-        fs.unlinkSync("../../public/wxapp/image/banner/" + banner_id + ".jpg");
+        fs.unlinkSync("./public/wxapp/image/banner/" + banner_id + ".jpg");
     } catch (e){
         res.status(200)
             .send({result: 0, err: "删除失败"});
