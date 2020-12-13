@@ -32,8 +32,8 @@ app.use("/webapp/discover",webappDiscoverRouter);
  */
 
 let server = https.createServer({
-    key: fs.readFileSync("./util/2_www.xinliceliang.com.key"),
-    cert: fs.readFileSync("./util/1_www.xinliceliang.com_bundle.crt"),
+    key: fs.readFileSync("./util/2_www.xinlitongji.com.key"),
+    cert: fs.readFileSync("./util/1_www.xinlitongji.com_bundle.crt"),
 },app);
 
 
