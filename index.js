@@ -8,6 +8,8 @@ let fs = require("fs");
 let allowCrossDomain = (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Method", "*");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Content-Security-Policy", "default-src: 'self'");
     next();
 }
 app.use(allowCrossDomain);

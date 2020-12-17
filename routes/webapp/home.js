@@ -42,12 +42,17 @@ router.get("/delSwiper", (req, res) => {
 // 上传轮播图
 router.post("/changeSwiper", multipartMiddleware, (req, res) => {
 
+    console.log(req.files);
+
     // 获取文件对象
     let img = req.files.img_url; // 轮播图
     let banner_id = uuid.v4();
+    console.log(img);
 
     let name = banner_id + ".jpg";
     let path = img.path;
+
+
     try {
         // 获取上传的临时图片对象
         let fd = fs.readFileSync(path);
