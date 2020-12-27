@@ -64,6 +64,7 @@ router.get("/getPsyTestDetails", (req, res) => {
 router.get("/getPsyCounseling", (req, res) => {
     let sql =
         "SELECT" +
+            " consultant_name," + // 咨询师姓名
             " consultant_id," + // 咨询师 id
             " img_url," +  // 咨询师照片
             " expertise," + // 擅长领域
@@ -81,7 +82,9 @@ router.get("/getPsyCounseling", (req, res) => {
 
 // 获取心理咨询师详情信息
 router.get("/getConsultantDetails", (req, res) => {
-    let consultant_id = req.query.consultant_id;
+
+    let data = JSON.parse(req.query.event);
+    let consultant_id = data.consultant_id;
     let sql =
         "SELECT" +
             " consultant_id," + // 咨询师id
