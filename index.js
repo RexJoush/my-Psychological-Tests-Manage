@@ -9,7 +9,6 @@ let allowCrossDomain = (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Method", "*");
     res.header("Content-Security-Policy", "*");
-    res.header("Access-Control-Allow-Credentials", true);
     next();
 }
 app.use(allowCrossDomain);
